@@ -1,10 +1,9 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>no.nmdc</groupId>
-    <artifactId>modules</artifactId>
+    <artifactId>central-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Central-Api</name>
-    <packaging>pom</packaging>
+    <name>central-api</name>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/nmdc/Central-Api/issues</url>
