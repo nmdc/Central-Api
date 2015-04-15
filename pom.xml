@@ -4,6 +4,7 @@
     <artifactId>central-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>central-api</name>
+    <packaging>war</packaging>
     <issueManagement>
         <system>Github</system>
         <url>https://github.com/nmdc/Central-Api/issues</url>
@@ -37,9 +38,18 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>nexus-release</id>
+            <name>Nexus release repository for IMR</name>
+            <url>http://javadev.imr.no:8081/nexus/content/repositories/releases/</url>
+        </repository>        
     </repositories>
     <properties>
         <org.springframework.version>4.1.5.RELEASE</org.springframework.version>
+        <tomcat.version>7.0.47</tomcat.version>
+        <jaxb.version>2.1.11</jaxb.version>
+        <jstl.version>1.2</jstl.version>        
+        <aspect.version>1.7.4</aspect.version>        
     </properties>        
     <dependencies>
         <dependency>
@@ -57,6 +67,12 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>test</scope>
+        </dependency>        
         <dependency>
             <groupId>commons-configuration</groupId>
             <artifactId>commons-configuration</artifactId>
@@ -100,15 +116,64 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.4.1</version>
+		</dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${org.springframework.version}</version>
-            <scope>test</scope>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>        
+        <dependency>
+            <groupId>no.imr.framework.logging.slf4j</groupId>
+            <artifactId>logging-framework</artifactId>
+            <version>1.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspect.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspect.version}</version>
+        </dependency>                        
     </dependencies>
     <build>
         <finalName>Central-Api</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>     
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/webapp/WEB-INF</directory>
+            </resource>                                 
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/main/webapp/WEB-INF</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>   
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -126,7 +191,7 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>
+            </plugin>        
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
