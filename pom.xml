@@ -152,7 +152,12 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspect.version}</version>
-        </dependency>                        
+        </dependency>
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
+            <version>5.0.0</version>
+        </dependency>                                
     </dependencies>
     <build>
         <finalName>Central-Api</finalName>

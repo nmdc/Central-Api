@@ -16,8 +16,8 @@ public class ApplicationContext {
     /**
      * Configuration object for communicating with property data.
      *
-     * @return Configuration object containg properties.
-     * @throws ConfigurationException Error during instansiation.
+     * @return Configuration object containing properties.
+     * @throws ConfigurationException Error during instantiation.
      */
 //    @Bean
 //    public org.apache.commons.configuration.Configuration configuration() throws ConfigurationException {

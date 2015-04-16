@@ -1,16 +1,23 @@
 package no.nmdc.api;
+
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
 public class MetadataApiTest {
+
+    private MetadataApiImpl impl = new MetadataApiImpl();
     
     @Test
-    public void querySolr() {
-        return;
+    public void getFacetsTest() throws Exception {
+        String json = impl.getFacets();
+        assertTrue(json.contains("\"provider\":{"));
+    }
+    
+    @Test
+    public void getFieldsTest() throws Exception {
+        String fieldXml = impl.getFields();
+        
     }
 }
