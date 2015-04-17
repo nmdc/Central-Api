@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Facets {
-    private List<Facet> facets = new ArrayList<Facet>();
+    private List<FacetName> facets = new ArrayList<FacetName>();
 
-    public List<Facet> getFacets() {
+    public List<FacetName> getFacets() {
         return facets;
     }
 
-    public void setFacets(List<Facet> facets) {
+    public void setFacets(List<FacetName> facets) {
         this.facets = facets;
     }
     
-    public void addFacet(Facet facet) {
+    public void addFacet(FacetName facet) {
         facets.add(facet);
     }
 }

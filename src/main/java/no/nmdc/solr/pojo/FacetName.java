@@ -29,13 +29,12 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "bioticType")
+@XmlType(name = "response")
 @XmlRootElement
-public class Facet {
+public class FacetName {
     private String name;
-    private String value;
     private String matches;
-    private List<Facet> children = new ArrayList<Facet>();
+    private List<FacetValue> children = new ArrayList<FacetValue>();
     
     public String getName() {
         return name;
@@ -43,22 +42,20 @@ public class Facet {
     public void setName(String name) {
         this.name = name;
     }
-    public String getValue() {
-        return value;
-    }
-    public void setValue(String value) {
-        this.value = value;
-    }
     public String getMatches() {
         return matches;
     }
     public void setMatches(String matches) {
         this.matches = matches;
     }
-    public List<Facet> getChildren() {
+    public List<FacetValue> getChildren() {
         return children;
     }
-    public void setChildren(List<Facet> children) {
+    public void setChildren(List<FacetValue> children) {
         this.children = children;
+    }
+    
+    public void addChild(FacetValue child) {
+        this.children.add(child);
     }
 }

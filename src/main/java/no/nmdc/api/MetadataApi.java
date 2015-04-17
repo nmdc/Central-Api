@@ -6,6 +6,12 @@ package no.nmdc.api;
  *
  */
 public interface MetadataApi {
+    
+    /**
+     * 
+     * @return JSON of faceted search
+     * @throws Exception
+     */
     public String getFieldFaceting() throws Exception;
     public String search( String criteria );
     public String getMetadataDetail( String doi );
