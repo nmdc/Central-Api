@@ -6,7 +6,7 @@ package no.nmdc.api;
  *
  */
 public interface MetadataApi {
-    public String getFacets() throws Exception;
+    public String getFieldFaceting() throws Exception;
     public String search( String criteria );
     public String getMetadataDetail( String doi );
 }
