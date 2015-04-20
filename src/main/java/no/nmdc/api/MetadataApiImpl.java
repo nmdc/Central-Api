@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+
 import no.nmdc.solr.pojo.FacetName;
 import no.nmdc.solr.pojo.FacetValue;
 import no.nmdc.solr.pojo.Facets;
+import no.nmdc.solr.pojo.Field;
 import no.nmdc.solr.pojo.FieldInfoComparator;
 
 import org.apache.solr.client.solrj.SolrClient;
@@ -18,7 +22,9 @@ import org.apache.solr.client.solrj.response.FacetField.Count;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MetadataApiImpl implements MetadataApi {
     
     private String serverUrl = "http://dev1.nmdc.no:8983/solr/nmdc1/";
@@ -26,10 +32,20 @@ public class MetadataApiImpl implements MetadataApi {
     private String facetedSearch = "q=*:*&rows=0&facet=true&facet.field=Parameter";
     
     public String getFieldFaceting() throws Exception {
+        Facets facets = getFacets();
+        JAXBContext jc = JAXBContext.newInstance(Field.class);
+        
+        Field field = new Field();
+        
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        
+        
+//        marshaller.marshal(((Object)field), transformAString());
         return "";
     }
     
-    protected Facets getFacets() throws Exception {
+    public Facets getFacets() throws Exception {
         
         Facets facets = getFields();
         for ( FacetName f : facets.getFacets() ) {

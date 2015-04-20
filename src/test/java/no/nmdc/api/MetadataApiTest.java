@@ -32,4 +32,9 @@ public class MetadataApiTest {
         Facets facets = impl.getFields();
         
     }
+    
+    @Test
+    public void getFieldFacetingTest() throws Exception {
+        String json = impl.getFieldFaceting();
+    }
 }
