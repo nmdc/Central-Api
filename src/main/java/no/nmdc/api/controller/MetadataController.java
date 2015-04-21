@@ -1,7 +1,7 @@
 package no.nmdc.api.controller;
 
 import no.nmdc.api.MetadataApiImpl;
-import no.nmdc.solr.pojo.Facets;
+import no.nmdc.api.domain.Facets;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

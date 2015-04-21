@@ -1,4 +1,4 @@
-package no.nmdc.solr.pojo;
+package no.nmdc.api.domain;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package no.nmdc.solr.pojo;
+package no.nmdc.solr.domain;
 
 import java.util.Comparator;
 

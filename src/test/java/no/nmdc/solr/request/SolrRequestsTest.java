@@ -1,11 +1,11 @@
-package no.nmdc.solr;
+package no.nmdc.solr.request;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import no.nmdc.solr.pojo.FieldInfoComparator;
+import no.nmdc.solr.domain.FieldInfoComparator;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -15,7 +15,7 @@ import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
 import org.junit.Test;
 
-public class LukeRequestTest {
+public class SolrRequestsTest {
 
     @Test
     public void lukeRequest() throws SolrServerException, IOException {
@@ -32,4 +32,6 @@ public class LukeRequestTest {
             System.out.println("docs: " + infoEntry.getDocs());
         }
     }
+    
+    
 }

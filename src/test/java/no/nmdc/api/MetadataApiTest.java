@@ -1,16 +1,35 @@
 package no.nmdc.api;
 
 import static org.junit.Assert.assertTrue;
-import no.nmdc.solr.pojo.FacetName;
-import no.nmdc.solr.pojo.FacetValue;
-import no.nmdc.solr.pojo.Facets;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import no.nmdc.api.domain.FacetName;
+import no.nmdc.api.domain.FacetValue;
+import no.nmdc.api.domain.Facets;
+import no.nmdc.solr.request.FacetWhitelist;
+import no.nmdc.solr.request.SolrRequests;
+
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class MetadataApiTest {
-
+    
     private MetadataApiImpl impl = new MetadataApiImpl();
+
+    @Before
+    public void setUp() {
+        SolrRequests solrRequest = new SolrRequests();
+        List<String> aWhitelist = Arrays.asList("Parameter");
+        FacetWhitelist facetWhitelist = new FacetWhitelist();
+        facetWhitelist.setFacetWhitelist(aWhitelist);
+        solrRequest.setFacetWhitelist(facetWhitelist);
+        impl.setSolrRequest(solrRequest);
+    }
+    
     
     @Test
     public void getFacetsTest() throws Exception {
@@ -29,12 +48,13 @@ public class MetadataApiTest {
     
     @Test
     public void getFieldsTest() throws Exception {
-        Facets facets = impl.getFields();
+        Facets facets = impl.getFacets();
         
     }
     
     @Test
     public void getFieldFacetingTest() throws Exception {
-        String json = impl.getFieldFaceting();
+        String json;
+//        = impl.getFieldFaceting();
     }
 }

@@ -10,6 +10,8 @@ import javax.xml.transform.TransformerFactory;
 
 import no.nmdc.api.MetadataApi;
 import no.nmdc.api.MetadataApiImpl;
+import no.nmdc.api.domain.Facets;
+import no.nmdc.solr.domain.Field;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +64,8 @@ public class MarshallFieldTest {
         
         StringWriter writer = new StringWriter();
         marshaller.marshal(((Object)impl.getFacets()), writer);
+        
+//        System.out.println( "" + impl.facetWhitelist );
         
         System.out.println(writer.getBuffer().toString());
     }

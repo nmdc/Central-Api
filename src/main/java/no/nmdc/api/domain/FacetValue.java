@@ -1,4 +1,4 @@
-package no.nmdc.solr.pojo;
+package no.nmdc.api.domain;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
