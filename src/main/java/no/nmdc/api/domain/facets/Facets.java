@@ -1,4 +1,4 @@
-package no.nmdc.api.domain;
+package no.nmdc.api.domain.facets;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="response")
+@XmlRootElement
 public class Facets {
     @XmlElement
     private List<FacetName> facets = new ArrayList<FacetName>();

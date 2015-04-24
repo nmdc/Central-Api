@@ -1,12 +1,18 @@
 package no.nmdc.api;
 
-import no.nmdc.api.domain.FacetName;
-import no.nmdc.api.domain.FacetValue;
-import no.nmdc.api.domain.Facets;
+import java.util.Collection;
+
+import no.nmdc.api.domain.SearchResult;
+import no.nmdc.api.domain.SearchResults;
+import no.nmdc.api.domain.facets.FacetName;
+import no.nmdc.api.domain.facets.FacetValue;
+import no.nmdc.api.domain.facets.Facets;
 import no.nmdc.solr.request.SolrRequests;
 
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,24 +29,34 @@ public class MetadataApiImpl implements MetadataApi {
     public Facets getFacets() throws Exception {
         Facets facets = solrRequest.getFacetsFromSolr();
         for ( FacetName f : facets.getFacets() ) {
-
             FacetField theField = solrRequest.facetedQuery( f );
             
-            System.out.println("name:"+f.getName()+" matches:"+theField.getValueCount());
             f.setMatches( "" + theField.getValueCount() );
             for ( Count c : theField.getValues() ) {
                 FacetValue facetChild = new FacetValue();
                 facetChild.setValue(c.getName());
                 facetChild.setMatches(""+c.getCount());
                 f.addChild(facetChild);
-                System.out.println("\t" + c.getName());
-                System.out.println("\t" + c.getCount());
             }
-
         }
         return facets;
     }
     
-    public String search( String criteria ) {return "";}
+    public SearchResults search(  String query, String facets ) throws Exception {
+        SolrDocumentList solrDocs = solrRequest.search(query, facets);
+        
+        SearchResults results = new SearchResults();
+        for ( SolrDocument adoc : solrDocs ) {
+            Collection<String> names = adoc.getFieldNames();
+            SearchResult result = new SearchResult();
+            for ( String name : names) {
+                result.putField(name, adoc.getFieldValue( name ));
+            }
+            results.addResult( result );
+        }
+        results.setMatches(solrDocs.size());
+        return results;
+    }
+    
     public String getMetadataDetail( String doi ) {return "";}
 }

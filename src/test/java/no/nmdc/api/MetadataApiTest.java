@@ -1,14 +1,16 @@
 package no.nmdc.api;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import no.nmdc.api.domain.FacetName;
-import no.nmdc.api.domain.FacetValue;
-import no.nmdc.api.domain.Facets;
+import no.nmdc.api.domain.SearchResult;
+import no.nmdc.api.domain.SearchResults;
+import no.nmdc.api.domain.facets.FacetName;
+import no.nmdc.api.domain.facets.FacetValue;
+import no.nmdc.api.domain.facets.Facets;
 import no.nmdc.solr.request.FacetWhitelist;
 import no.nmdc.solr.request.SolrRequests;
 
@@ -53,8 +55,11 @@ public class MetadataApiTest {
     }
     
     @Test
-    public void getFieldFacetingTest() throws Exception {
-        String json;
-//        = impl.getFieldFaceting();
+    public void searchForOneFacet() throws Exception {
+//        SearchResults r = impl.search("OCEAN TEMPERATURE", "Parameter");
+        impl.search("Havforskningsinstituttet", "Provider");
+        SearchResults r = new SearchResults();
+        System.out.println("r:"+r);
+        assertNotNull(r);
     }
 }

@@ -1,6 +1,8 @@
 package no.nmdc.api;
 
-import no.nmdc.api.domain.Facets;
+import no.nmdc.api.domain.SearchResult;
+import no.nmdc.api.domain.SearchResults;
+import no.nmdc.api.domain.facets.Facets;
 
 /**
  * TODO: skriv doc
@@ -15,6 +17,6 @@ public interface MetadataApi {
      * @throws Exception
      */
     public Facets getFacets() throws Exception;
-    public String search( String criteria );
+    public SearchResults search( String query, String facets ) throws Exception;
     public String getMetadataDetail( String doi );
 }

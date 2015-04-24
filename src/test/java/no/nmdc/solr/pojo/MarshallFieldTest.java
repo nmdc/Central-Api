@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerFactory;
 
 import no.nmdc.api.MetadataApi;
 import no.nmdc.api.MetadataApiImpl;
-import no.nmdc.api.domain.Facets;
+import no.nmdc.api.domain.facets.Facets;
 import no.nmdc.solr.domain.Field;
 
 import org.junit.Test;

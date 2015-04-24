@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import no.nmdc.api.domain.FacetName;
-import no.nmdc.api.domain.Facets;
+import no.nmdc.api.domain.facets.FacetName;
+import no.nmdc.api.domain.facets.Facets;
 import no.nmdc.solr.domain.FieldInfoComparator;
 
 import org.apache.solr.client.solrj.SolrClient;
@@ -16,13 +16,16 @@ import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+import org.noggit.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SolrRequests {
     
-    private String serverUrl = "http://dev1.nmdc.no:8983/solr/nmdc1/";
+    private String serverUrl = "http://dev1.nmdc.no:8983/solr/nmdc/";
     
     private FacetWhitelist facetWhitelist;
     
@@ -70,7 +73,33 @@ public class SolrRequests {
     
         QueryResponse queryResponse = solrClient.query(solrQuery);
         List<FacetField> fields = queryResponse.getFacetFields();
-        FacetField theField = fields.get(0);
-        return theField;
+        if (fields.size() > 0) {
+            FacetField theField = fields.get(0);
+            return theField;
+        } else return new FacetField("");
+    }
+    
+
+    public SolrDocumentList search(String query, String facet) throws Exception {
+        SolrClient solrClient = new HttpSolrClient(serverUrl);
+        
+        SolrQuery solrQuery = new SolrQuery();
+        if ( facet != null && !facet.equals("")) {
+            solrQuery.setQuery( facet + ":"+query );
+        } else {
+            solrQuery.setQuery( query );
+        }
+
+        QueryResponse queryResponse = solrClient.query(solrQuery);
+        System.out.println("queryResponse:"+queryResponse.toString());
+        if (queryResponse.getFacetFields() != null)
+            System.out.println("FacetedField:"+queryResponse.getFacetFields().toString());
+        System.out.println("Result:"+queryResponse.getResults().toString());
+        List<SolrDocument> docs = queryResponse.getResults(); //there is no facet count returned (?)
+        
+        SolrDocumentList docList = queryResponse.getResults();
+        String responseAsJson = JSONUtil.toJSON(docList);
+        System.out.println("responseAsJson:"+responseAsJson);
+        return docList;
     }
 }

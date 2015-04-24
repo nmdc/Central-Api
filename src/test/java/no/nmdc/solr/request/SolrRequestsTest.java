@@ -1,7 +1,12 @@
 package no.nmdc.solr.request;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +18,8 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.junit.Test;
 
 public class SolrRequestsTest {
@@ -33,5 +40,15 @@ public class SolrRequestsTest {
         }
     }
     
-    
+    @Test
+    public void search() throws Exception {
+        SolrDocumentList docs = new SolrRequests().search("Havforskningsinstituttet", "Provider");
+        
+        SolrDocument doc = docs.get(0);
+        System.out.println("doc:"+doc);
+        String entryId = (String)doc.getFieldValue("Entry_ID");
+        assertTrue( entryId.contains("imr") );
+        assertNotNull( doc.getFieldValue("Start_Date") );
+
+    }
 }
