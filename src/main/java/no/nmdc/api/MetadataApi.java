@@ -1,6 +1,5 @@
 package no.nmdc.api;
 
-import no.nmdc.api.domain.SearchResult;
 import no.nmdc.api.domain.SearchResults;
 import no.nmdc.api.domain.facets.Facets;
 

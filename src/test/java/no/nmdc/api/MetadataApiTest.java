@@ -1,12 +1,11 @@
 package no.nmdc.api;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
 
-import no.nmdc.api.domain.SearchResult;
 import no.nmdc.api.domain.SearchResults;
 import no.nmdc.api.domain.facets.FacetName;
 import no.nmdc.api.domain.facets.FacetValue;

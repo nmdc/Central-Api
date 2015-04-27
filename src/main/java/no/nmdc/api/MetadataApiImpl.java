@@ -1,8 +1,9 @@
 package no.nmdc.api;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-import no.nmdc.api.domain.SearchResult;
 import no.nmdc.api.domain.SearchResults;
 import no.nmdc.api.domain.facets.FacetName;
 import no.nmdc.api.domain.facets.FacetValue;
@@ -48,11 +49,11 @@ public class MetadataApiImpl implements MetadataApi {
         SearchResults results = new SearchResults();
         for ( SolrDocument adoc : solrDocs ) {
             Collection<String> names = adoc.getFieldNames();
-            SearchResult result = new SearchResult();
+            Map<String, Object> record = new HashMap<String, Object>();
             for ( String name : names) {
-                result.putField(name, adoc.getFieldValue( name ));
+                record.put( name, adoc.getFieldValue( name ) );
             }
-            results.addResult( result );
+            results.addResult( record );
         }
         results.setMatches(solrDocs.size());
         return results;

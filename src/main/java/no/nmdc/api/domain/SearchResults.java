@@ -2,6 +2,7 @@ package no.nmdc.api.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -13,7 +14,7 @@ public class SearchResults {
     private Integer matches;
     
     @XmlElement
-    private List<SearchResult> results = new ArrayList<SearchResult>(9);
+    private List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
 
     public Integer getMatches() {
         return matches;
@@ -23,15 +24,16 @@ public class SearchResults {
         this.matches = matches;
     }
 
-    public List<SearchResult> getResults() {
+    public List<Map<String, Object>> getResults() {
         return results;
     }
 
-    public void setResults(List<SearchResult> results) {
+    public void setResults(List<Map<String, Object>> results) {
         this.results = results;
     }
-    public void addResult( SearchResult result ) {
-        this.results.add( result );
+    
+    public void addResult( Map<String, Object> record ) {
+        this.results.add( record );
     }
 
 }
