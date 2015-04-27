@@ -1,6 +1,7 @@
 package no.nmdc.solr.request;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -21,11 +22,18 @@ import org.apache.solr.common.SolrDocumentList;
 import org.noggit.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.apache.commons.configuration.Configuration;
 
 @Component
 public class SolrRequests {
     
-    private String serverUrl = "http://dev1.nmdc.no:8983/solr/nmdc/";
+//    private String serverUrl = "http://dev1.nmdc.no:8983/solr/nmdc/";
+    
+    /**
+     * Application configuration.
+     */
+    @Autowired
+    private Configuration configuration;
     
     private FacetWhitelist facetWhitelist;
     
@@ -42,15 +50,13 @@ public class SolrRequests {
                 FacetName facet = new FacetName();
                 facet.setName(infoEntry.getName());
                 facets.addFacet(facet);
-                System.out.println("name: " + infoEntry.getName());
-                System.out.println("docs: " + infoEntry.getDocs());
             }
         }
         return facets;
     }
     
     protected List<FieldInfo> getFieldInfo() throws Exception {
-        SolrClient solrClient = new HttpSolrClient(serverUrl);
+        SolrClient solrClient = new HttpSolrClient(getSolrUrl());
 
         LukeRequest lukeRequest = new LukeRequest();
         lukeRequest.setNumTerms(1);
@@ -62,7 +68,7 @@ public class SolrRequests {
     }
     
     public FacetField facetedQuery( FacetName facetName) throws Exception {
-        SolrClient solrClient = new HttpSolrClient(serverUrl);
+        SolrClient solrClient = new HttpSolrClient(getSolrUrl());
         
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery("*:*");
@@ -81,7 +87,7 @@ public class SolrRequests {
     
 
     public SolrDocumentList search(String query, String facet) throws Exception {
-        SolrClient solrClient = new HttpSolrClient(serverUrl);
+        SolrClient solrClient = new HttpSolrClient( getSolrUrl() );
         
         SolrQuery solrQuery = new SolrQuery();
         if ( facet != null && !facet.equals("")) {
@@ -101,5 +107,9 @@ public class SolrRequests {
         String responseAsJson = JSONUtil.toJSON(docList);
         System.out.println("responseAsJson:"+responseAsJson);
         return docList;
+    }
+    
+    private String getSolrUrl() {
+        return configuration.getString("api.url");
     }
 }
