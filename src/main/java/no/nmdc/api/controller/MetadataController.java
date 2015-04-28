@@ -27,9 +27,9 @@ public class MetadataController {
     }
     
     @RequestMapping("/search")
-    public @ResponseBody SearchResults  search(@RequestParam("q") String query, @RequestParam("facet.field") String facetField) throws Exception {
+    public @ResponseBody SearchResults  search(@RequestParam("q") String query) throws Exception {
 
-        SearchResults result = impl.search(query, facetField);
+        SearchResults result = impl.search(query);
         return result; 
     }
 }

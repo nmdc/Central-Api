@@ -19,6 +19,12 @@ public class FacetWhitelist {
         this.facetWhitelist = whitelist;
     }
     
+    public FacetWhitelist(){}
+    
+    public FacetWhitelist(List<String> whitelist) {
+        this.facetWhitelist = whitelist;
+    }
+    
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
        return new PropertySourcesPlaceholderConfigurer();

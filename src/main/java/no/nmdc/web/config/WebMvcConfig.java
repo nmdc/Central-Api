@@ -40,8 +40,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(getMappingJacksonHttpMessageConverter());
-//        converters.add(getStringHttpMessageConverter());    
+        converters.add(getMappingJacksonHttpMessageConverter());    
     }
     
     /**
@@ -55,15 +54,4 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         converter.setPrettyPrint(true);
         return converter;
     } 
-    
-    @Bean( name = "mappingStringMessageConverter")
-    public HttpMessageConverter getStringHttpMessageConverter() {
-        StringHttpMessageConverter stringConverter = new StringHttpMessageConverter(
-        Charset.forName("UTF-8"));
-        stringConverter.setSupportedMediaTypes(Arrays.asList( 
-                MediaType.TEXT_PLAIN, 
-                MediaType.TEXT_HTML, 
-                MediaType.APPLICATION_JSON));
-        return stringConverter;
-    }
 }

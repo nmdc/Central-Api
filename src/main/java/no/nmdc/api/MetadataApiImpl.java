@@ -8,7 +8,8 @@ import no.nmdc.api.domain.SearchResults;
 import no.nmdc.api.domain.facets.FacetName;
 import no.nmdc.api.domain.facets.FacetValue;
 import no.nmdc.api.domain.facets.Facets;
-import no.nmdc.solr.request.SolrRequests;
+import no.nmdc.solr.request.FacetRequest;
+import no.nmdc.solr.request.QueryRequest;
 
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
@@ -20,17 +21,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class MetadataApiImpl implements MetadataApi {
     
-    private SolrRequests solrRequest;
+    private QueryRequest queryRequest;
+    
+    private FacetRequest lukeRequest;
     
     @Autowired
-    public void setSolrRequest(SolrRequests solrRequest) {
-        this.solrRequest = solrRequest;
+    public void setQueryRequest(QueryRequest queryRequest) {
+        this.queryRequest = queryRequest;
+    }
+    
+    @Autowired
+    public void setFacetRequest(FacetRequest lukeRequest) {
+        this.lukeRequest = lukeRequest;
     }
     
     public Facets getFacets() throws Exception {
-        Facets facets = solrRequest.getFacetsFromSolr();
+        Facets facets = lukeRequest.getFacetsFromSolr();
         for ( FacetName f : facets.getFacets() ) {
-            FacetField theField = solrRequest.facetedQuery( f );
+            FacetField theField = queryRequest.facetedQuery( f );
             
             f.setMatches( "" + theField.getValueCount() );
             for ( Count c : theField.getValues() ) {
@@ -43,8 +51,8 @@ public class MetadataApiImpl implements MetadataApi {
         return facets;
     }
     
-    public SearchResults search(  String query, String facets ) throws Exception {
-        SolrDocumentList solrDocs = solrRequest.search(query, facets);
+    public SearchResults search(  String query ) throws Exception {
+        SolrDocumentList solrDocs = queryRequest.search(query);
         
         SearchResults results = new SearchResults();
         for ( SolrDocument adoc : solrDocs ) {

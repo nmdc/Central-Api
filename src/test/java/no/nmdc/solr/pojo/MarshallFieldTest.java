@@ -2,6 +2,8 @@ package no.nmdc.solr.pojo;
 
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -12,21 +14,39 @@ import no.nmdc.api.MetadataApi;
 import no.nmdc.api.MetadataApiImpl;
 import no.nmdc.api.domain.facets.Facets;
 import no.nmdc.solr.domain.Field;
+import no.nmdc.solr.request.FacetRequest;
+import no.nmdc.solr.request.FacetWhitelist;
+import no.nmdc.solr.request.QueryRequest;
+import no.nmdc.solr.request.NmdcSolrServer;
 
+import org.apache.solr.client.solrj.request.LukeRequest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-@WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:application-context.xml"})
+
 public class MarshallFieldTest {
     
-    @Autowired
-    private MetadataApiImpl impl;
+    private MetadataApiImpl impl = new MetadataApiImpl();
+    
+    private NmdcSolrServer solr = new NmdcSolrServer();
+    QueryRequest query = new QueryRequest();
+    FacetRequest luke = new FacetRequest();
+    
+    @Before
+    public void setUp() {
+        solr.setSolrUrl("http://dev1.nmdc.no:8983/solr/nmdc");
+        query.setSolr(solr);
+        luke.setSolr(solr);
+        luke.setFacetWhitelist( new FacetWhitelist( Arrays.asList("Provider")) );
+        impl.setQueryRequest(query);
+        impl.setFacetRequest(luke);
+    }
     
     @Test
     public void marshallFieldTest() throws Exception {
@@ -64,8 +84,6 @@ public class MarshallFieldTest {
         
         StringWriter writer = new StringWriter();
         marshaller.marshal(((Object)impl.getFacets()), writer);
-        
-//        System.out.println( "" + impl.facetWhitelist );
         
         System.out.println(writer.getBuffer().toString());
     }
