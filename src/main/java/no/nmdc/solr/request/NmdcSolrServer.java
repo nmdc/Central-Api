@@ -23,7 +23,7 @@ public class NmdcSolrServer {
     
     @PostConstruct
     public void setup() {
-        
+        solrClient = new HttpSolrClient(getSolrUrl());
     }
     
     private String getSolrUrl() {
@@ -37,11 +37,10 @@ public class NmdcSolrServer {
     }
     
     public SolrClient getSolrClient() {
-        return new HttpSolrClient(getSolrUrl());
+        return solrClient;
     }
     
     public QueryResponse query( SolrQuery solrQuery) throws SolrServerException {
-        solrClient = new HttpSolrClient(getSolrUrl());
         return solrClient.query(solrQuery);
     }
 }

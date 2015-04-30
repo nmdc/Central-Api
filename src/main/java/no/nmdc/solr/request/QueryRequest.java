@@ -2,7 +2,7 @@ package no.nmdc.solr.request;
 
 import java.util.List;
 
-import no.nmdc.api.domain.facets.FacetName;
+import no.nmdc.api.facets.domain.FacetName;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class QueryRequest {
+    
+    private final Integer DEFAULT_ROWS = 10;
     
     private NmdcSolrServer solr;
     
@@ -39,10 +41,14 @@ public class QueryRequest {
         } else return new FacetField("");
     }    
     
-    public SolrDocumentList search(String query) throws Exception {
+    public SolrDocumentList search(String query, Integer offset) throws Exception {
         
         SolrQuery solrQuery = new SolrQuery();
         solrQuery.setQuery( query );
+        if ( offset != null ) {
+            solrQuery.setStart(offset);
+            solrQuery.setRows( DEFAULT_ROWS );
+        }
 
         QueryResponse queryResponse = solr.query(solrQuery);
         System.out.println("queryResponse:"+queryResponse.toString());

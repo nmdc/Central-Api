@@ -1,4 +1,4 @@
-package no.nmdc.api.domain.facets;
+package no.nmdc.api.facets.domain;
 
 import java.util.ArrayList;
 import java.util.List;

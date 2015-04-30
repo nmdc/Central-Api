@@ -2,10 +2,7 @@ package no.nmdc.solr.request;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import no.nmdc.solr.domain.FieldInfoComparator;
 
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -24,9 +21,8 @@ public class FacetRequestTest {
         lukeRequest.setNumTerms(1);
         LukeResponse lukeResponse = lukeRequest.process(solrClient);
 
-        List<FieldInfo> sorted = new ArrayList<FieldInfo>(lukeResponse.getFieldInfo().values());
-        Collections.sort(sorted, new FieldInfoComparator());
-        for (FieldInfo infoEntry : sorted) {
+        List<FieldInfo> fields = new ArrayList<FieldInfo>(lukeResponse.getFieldInfo().values());
+        for (FieldInfo infoEntry : fields) {
             System.out.println("name: " + infoEntry.getName());
             System.out.println("docs: " + infoEntry.getDocs());
         }

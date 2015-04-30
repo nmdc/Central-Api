@@ -1,5 +1,10 @@
 package no.nmdc.api;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Map;
+
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
 import no.nmdc.solr.request.QueryRequest;
 
@@ -23,14 +29,27 @@ public class MetadataApiTest {
     
     @Test
     public void searchTest() throws Exception {
-        impl.setFacetRequest(lukeRequest);
         impl.setQueryRequest(queryRequest);
         
-        queryRequest.search("");
-        Mockito.doReturn(new SolrDocumentList()).when(queryRequest).search("");
+        Mockito.doReturn(searchResult()).when(queryRequest).search("", null);
         
+        SearchResults results = impl.search("", null);
+        assertEquals(results.getMatches(), new Integer(2));
         
+        Map<String, Object> result1 = results.getResults().get(0);
+        assertEquals(result1.get("field1"), "value1");
+    }
+    
+    private SolrDocumentList searchResult() {
+        SolrDocumentList docList = new SolrDocumentList();
+        SolrDocument doc1 = new SolrDocument();
+        doc1.setField("field1", "value1");
         
-        impl.search("");
+        SolrDocument doc2 = new SolrDocument();
+        doc1.setField("field2", "value2");
+        
+        docList.add(doc1);
+        docList.add(doc2);
+        return docList;
     }
 }

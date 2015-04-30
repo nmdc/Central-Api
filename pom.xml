@@ -184,7 +184,13 @@
 		    <groupId>org.mockito</groupId>
 		    <artifactId>mockito-all</artifactId>
 		    <version>1.10.19</version>
-		</dependency>		
+		</dependency>	
+        <dependency>	
+            <groupId>httpunit</groupId>
+            <artifactId>httpunit</artifactId>
+            <version>1.7</version>
+            <scope>test</scope>
+        </dependency> 
     </dependencies>
     <build>
         <finalName>Central-Api</finalName>
@@ -196,7 +202,11 @@
             </resource>
             <resource>
                 <directory>src/main/webapp/WEB-INF</directory>
+            </resource>
+            <resource>
+                <directory>${project.build.dir}/tomcat</directory>
             </resource>                                 
+                                             
         </resources>
         <testResources>
             <testResource>
@@ -232,7 +242,17 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
             </plugin>
-        </plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+	                <excludes>
+	                    <exclude>**/*IT.java</exclude>
+	                </excludes>
+                </configuration>
+            </plugin>                       
+        </plugins>        
     </build>
     <profiles>
         <profile>
@@ -282,6 +302,66 @@
                         <configuration>
                             <updateReleaseInfo>true</updateReleaseInfo>
                         </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-test</id>
+            <activation>
+                <property>
+                    <name>integration-test</name>
+                    <value>true</value>
+                </property>
+            </activation>      
+            <build>         
+                <plugins>
+	                <plugin>
+	                    <groupId>org.apache.maven.plugins</groupId>
+	                    <artifactId>maven-failsafe-plugin</artifactId>
+	                    <version>2.12.4</version>
+	                    <configuration>
+	                        <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+	                        <includes>
+	                            <include>**/*IT*</include>
+	                        </includes>
+	                    </configuration>
+	                    <executions>
+	                        <execution>
+	                            <goals>
+	                                <goal>integration-test</goal>
+	                                <goal>verify</goal>
+	                            </goals>
+	                        </execution>
+	                    </executions>
+	                </plugin>                   
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.1</version>
+                        <configuration>
+                            <path>/Central-Api</path>
+                            <port>8080</port>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-tomcat</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>run-war</goal>
+                                </goals>
+                                <configuration>
+                                    <fork>true</fork>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>shutdown</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>

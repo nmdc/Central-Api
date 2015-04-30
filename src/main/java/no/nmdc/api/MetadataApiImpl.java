@@ -4,10 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.nmdc.api.domain.SearchResults;
-import no.nmdc.api.domain.facets.FacetName;
-import no.nmdc.api.domain.facets.FacetValue;
-import no.nmdc.api.domain.facets.Facets;
+import no.nmdc.api.facets.domain.FacetName;
+import no.nmdc.api.facets.domain.FacetValue;
+import no.nmdc.api.facets.domain.Facets;
+import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
 import no.nmdc.solr.request.QueryRequest;
 
@@ -51,8 +51,8 @@ public class MetadataApiImpl implements MetadataApi {
         return facets;
     }
     
-    public SearchResults search(  String query ) throws Exception {
-        SolrDocumentList solrDocs = queryRequest.search(query);
+    public SearchResults search( String query, Integer offset ) throws Exception {
+        SolrDocumentList solrDocs = queryRequest.search(query, offset);
         
         SearchResults results = new SearchResults();
         for ( SolrDocument adoc : solrDocs ) {

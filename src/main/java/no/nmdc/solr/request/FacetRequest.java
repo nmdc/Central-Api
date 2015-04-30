@@ -1,12 +1,11 @@
 package no.nmdc.solr.request;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-import no.nmdc.api.domain.facets.FacetName;
-import no.nmdc.api.domain.facets.Facets;
-import no.nmdc.solr.domain.FieldInfoComparator;
+import no.nmdc.api.facets.domain.FacetName;
+import no.nmdc.api.facets.domain.Facets;
 
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
@@ -50,8 +49,7 @@ public class FacetRequest {
         lukeRequest.setNumTerms(1);
         LukeResponse lukeResponse = lukeRequest.process(solr.getSolrClient());
 
-        List<FieldInfo> sorted = new ArrayList<FieldInfo>(lukeResponse.getFieldInfo().values());
-        Collections.sort(sorted, new FieldInfoComparator());
-        return sorted;
+        Map<String, FieldInfo> fieldInfos = lukeResponse.getFieldInfo();
+        return new ArrayList<FieldInfo>(fieldInfos.values());
     }
 }

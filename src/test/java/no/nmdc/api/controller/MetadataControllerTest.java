@@ -1,57 +1,37 @@
 package no.nmdc.api.controller;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertEquals;
+import no.nmdc.api.search.domain.SearchResults;
 
-import no.nmdc.api.MetadataApiImpl;
-import no.nmdc.api.domain.SearchResults;
-import no.nmdc.solr.request.FacetRequest;
-import no.nmdc.solr.request.FacetWhitelist;
-import no.nmdc.solr.request.NmdcSolrServer;
-import no.nmdc.solr.request.QueryRequest;
-
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:application-test-context.xml"})
 public class MetadataControllerTest {
     
-    private MetadataController controller = new MetadataController();
-
-    private MetadataApiImpl impl = new MetadataApiImpl();
-    
-    private NmdcSolrServer solr = new NmdcSolrServer();
-    QueryRequest query = new QueryRequest();
-    FacetRequest luke = new FacetRequest();
-    
-    @Before
-    public void setUp() {
-        solr.setSolrUrl("http://dev1.nmdc.no:8983/solr/nmdc");
-        query.setSolr(solr);
-        luke.setSolr(solr);
-        luke.setFacetWhitelist( new FacetWhitelist( Arrays.asList("Provider")) );
-        impl.setQueryRequest(query);
-        impl.setFacetRequest(luke);
-        controller.setMetadataApi(impl);
-    }
+    @Autowired
+    private MetadataController controller;
     
     @Test
-    public void getAllFacets() throws Exception {
-        controller.getFacets();
-    }
-    
-    @Test
-    public void testGetTables() throws Exception {
+    public void searchTest() throws Exception {
 
-        SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE" );
-        SearchResults resOk1 = controller.search( "Parameter:SALINITY/DENSITY" );
-        SearchResults resOk2 = controller.search( "Parameter:%22OCEAN%20TEMPERATURE%22" );
-        SearchResults resOk3 = controller.search( "Parameter:%22SALINITY/DENSITY%22" );
+        SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE", null );
+        SearchResults resOk1 = controller.search( "Parameter:SALINITY/DENSITY", null );
+        SearchResults resOk2 = controller.search( "Parameter:\"OCEAN TEMPERATURE\"", null ); //"Parameter:%22OCEAN%20TEMPERATURE%22"
+        SearchResults resOk3 = controller.search( "Parameter:\"SALINITY/DENSITY\"", null );  //%22SALINITY/DENSITY%22
+        
+        Integer offset = new Integer(5);
+        SearchResults resOffset = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset );  
+        System.out.println("resOffset:"+resOffset.getMatches() );
+        assertEquals(resOffset.getMatches(), new Integer(1));
         
         System.out.println(resFail.getMatches());
         System.out.println(resOk1.getMatches());
         System.out.println(resOk2.getMatches());
         System.out.println(resOk3.getMatches());
-
     }
-
 }

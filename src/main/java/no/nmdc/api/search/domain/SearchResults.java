@@ -1,4 +1,4 @@
-package no.nmdc.api.domain;
+package no.nmdc.api.search.domain;
 
 import java.util.ArrayList;
 import java.util.List;

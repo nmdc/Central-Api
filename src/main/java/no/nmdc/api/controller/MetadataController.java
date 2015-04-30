@@ -1,8 +1,8 @@
 package no.nmdc.api.controller;
 
 import no.nmdc.api.MetadataApi;
-import no.nmdc.api.domain.SearchResults;
-import no.nmdc.api.domain.facets.Facets;
+import no.nmdc.api.facets.domain.Facets;
+import no.nmdc.api.search.domain.SearchResults;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,9 +27,13 @@ public class MetadataController {
     }
     
     @RequestMapping("/search")
-    public @ResponseBody SearchResults  search(@RequestParam("q") String query) throws Exception {
+    public @ResponseBody SearchResults  search(@RequestParam("q") String query, @RequestParam(value = "offset", required = false) Integer offset) throws Exception {
 
-        SearchResults result = impl.search(query);
+        Integer start = null;
+        if ( offset != null && !offset.equals("") ) {
+            start = new Integer(offset);
+        }
+        SearchResults result = impl.search(query, start);
         return result; 
     }
 }
