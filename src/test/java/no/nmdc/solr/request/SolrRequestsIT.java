@@ -19,7 +19,7 @@ public class SolrRequestsIT {
     private NmdcSolrServer solr = new NmdcSolrServer();
     
     @Autowired
-    private QueryRequest query = new QueryRequest();
+    private SearchRequest query = new SearchRequest();
     
     @Test
     public void search() throws Exception {

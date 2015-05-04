@@ -1,6 +1,9 @@
 package no.nmdc.api.controller;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
+
 import no.nmdc.api.search.domain.SearchResults;
 
 import org.junit.Test;
@@ -16,22 +19,51 @@ public class MetadataControllerTest {
     @Autowired
     private MetadataController controller;
     
+    private String query = "";
+    private Integer offset = null;
+    private String boundingBox = null;
+    private Date beginDate = null;
+    private Date endDate = null;
+    
     @Test
     public void searchTest() throws Exception {
+        
+        SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE", offset, beginDate, endDate, boundingBox );
+        SearchResults resOk1 = controller.search( "Parameter:SALINITY/DENSITY", offset, beginDate, endDate, boundingBox );
+        SearchResults resOk2 = controller.search( "Parameter:\"OCEAN TEMPERATURE\"", offset, beginDate, endDate, boundingBox ); //"Parameter:%22OCEAN%20TEMPERATURE%22"
+        SearchResults resOk3 = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset, beginDate, endDate, boundingBox );  //%22SALINITY/DENSITY%22
+        
+        assertTrue( resFail.getMatches() == 0 );
+        assertTrue( resOk1.getMatches() > 0 );
+        assertTrue( resOk2.getMatches() > 0 );
+        assertTrue( resOk3.getMatches() > 0 );
+    }
+    
+    @Test
+    public void offsetTest() throws Exception {
 
-        SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE", null );
-        SearchResults resOk1 = controller.search( "Parameter:SALINITY/DENSITY", null );
-        SearchResults resOk2 = controller.search( "Parameter:\"OCEAN TEMPERATURE\"", null ); //"Parameter:%22OCEAN%20TEMPERATURE%22"
-        SearchResults resOk3 = controller.search( "Parameter:\"SALINITY/DENSITY\"", null );  //%22SALINITY/DENSITY%22
-        
         Integer offset = new Integer(5);
-        SearchResults resOffset = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset );  
-        System.out.println("resOffset:"+resOffset.getMatches() );
-        assertEquals(resOffset.getMatches(), new Integer(1));
+        SearchResults resOffset = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset, beginDate, endDate, boundingBox );  
+        System.out.println("matches:"+resOffset.getMatches());
+        assertTrue( resOffset.getMatches() > 0 );
+    }
+    
+    @Test
+    public void bboxTest() throws Exception {
+//        "fq": "location_rpt:\"Intersects(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
+//        "fq": "location_rpt:\"IsWithin(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
+
+        String bbox = "location_rpt:\"Intersects(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
         
-        System.out.println(resFail.getMatches());
-        System.out.println(resOk1.getMatches());
-        System.out.println(resOk2.getMatches());
-        System.out.println(resOk3.getMatches());
+        SearchResults resbbox = controller.search( query, offset, beginDate, endDate, bbox );  
+        assertTrue( resbbox.getMatches() > 0);
+    }
+    
+    @Test
+    public void getAllDocumentsTest() throws Exception {
+        
+        SearchResults resbbox = controller.search( query, offset, beginDate, endDate, boundingBox );
+        System.out.println("matches:"+resbbox.getMatches());
+        assertTrue( resbbox.getMatches() > 0);
     }
 }

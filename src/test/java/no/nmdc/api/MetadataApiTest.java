@@ -2,19 +2,22 @@ package no.nmdc.api;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
-import no.nmdc.solr.request.QueryRequest;
+import no.nmdc.solr.request.SearchRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataApiTest {
@@ -22,18 +25,31 @@ public class MetadataApiTest {
     private MetadataApiImpl impl = new MetadataApiImpl();
     
     @Mock
-    QueryRequest queryRequest;
+    SearchRequest queryRequest;
     
     @Mock
     FacetRequest lukeRequest;
+    
+    SearchParameters searchParam;
+    
+    @Before
+    public void setup() {
+        String query = "";
+        Integer offset = null;
+        String boundingBox = null;
+        Date beginDate = null;
+        Date endDate = null;
+        
+        searchParam = new SearchParameters(query, offset, beginDate, endDate, boundingBox);
+    }
     
     @Test
     public void searchTest() throws Exception {
         impl.setQueryRequest(queryRequest);
         
-        Mockito.doReturn(searchResult()).when(queryRequest).search("", null);
+        Mockito.doReturn(searchResult()).when(queryRequest).search(searchParam);
         
-        SearchResults results = impl.search("", null);
+        SearchResults results = impl.search(searchParam);
         assertEquals(results.getMatches(), new Integer(2));
         
         Map<String, Object> result1 = results.getResults().get(0);

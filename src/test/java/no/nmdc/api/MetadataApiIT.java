@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
+import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -11,8 +12,10 @@ import javax.xml.bind.Marshaller;
 import no.nmdc.api.facets.domain.FacetName;
 import no.nmdc.api.facets.domain.FacetValue;
 import no.nmdc.api.facets.domain.Facets;
+import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +24,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:application-test-context.xml"})
-public class MetadataApiITemp {
+public class MetadataApiIT {
     
     @Autowired
     private MetadataApiImpl impl;
     
+    SearchParameters searchParam;
+    
+    @Before
+    public void setup() {
+        String query = "Provider:Havforskningsinstituttet";
+        Integer offset = null;
+        String boundingBox = null;
+        Date beginDate = null;
+        Date endDate = null;
+        
+        searchParam = new SearchParameters(query, offset, beginDate, endDate, boundingBox);
+    }
     
     @Test
-    public void getFacetsIntegrationTest() throws Exception {
+    public void getFacetsIT() throws Exception {
         Facets facets = impl.getFacets();
         assertTrue( facets.getFacets().size() > 0 );
         for ( FacetName f : facets.getFacets() ) {
@@ -41,20 +56,13 @@ public class MetadataApiITemp {
             }
         }
     }
-    
-    @Test
-    public void getFieldsIntegrationTest() throws Exception {
-        Facets facets = impl.getFacets();
 
-    }
-    
     @Test
-    public void searchForOneFacetIntegrationTest() throws Exception {
-//        SearchResults r = impl.search("OCEAN TEMPERATURE", "Parameter");
-        impl.search("Provider:Havforskningsinstituttet", null);
-        SearchResults r = new SearchResults();
-        System.out.println("r:"+r);
-        assertNotNull(r);
+    public void searchForOneFacetIT() throws Exception {
+
+        SearchResults results = impl.search(searchParam);
+        System.out.println("results:"+results.getMatches());
+        assertNotNull(results);
     }
     
     @Test

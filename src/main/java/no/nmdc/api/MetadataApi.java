@@ -1,10 +1,12 @@
 package no.nmdc.api;
 
 import no.nmdc.api.facets.domain.Facets;
+import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 
 /**
- * TODO: skriv doc
+ * Queries Solr and maps from solrj objects to nmdc API objects
+ * 
  * @author endrem
  *
  */
@@ -12,10 +14,23 @@ public interface MetadataApi {
     
     /**
      * 
-     * @return JSON of faceted search
+     * @return {@literal SearchResults} as JSON 
      * @throws Exception
      */
     public Facets getFacets() throws Exception;
-    public SearchResults search( String query, Integer offset ) throws Exception;
+    
+    /**
+     * 
+     * @return {@literal SearchResults} as JSON 
+     * @throws Exception
+     */
+//    public SearchResults search( String query, Integer offset ) throws Exception;
+    public SearchResults search( SearchParameters query ) throws Exception;
+    
+    /**
+     * 
+     * @return {@literal SearchResults} as JSON 
+     * @throws Exception
+     */
     public String getMetadataDetail( String doi );
 }

@@ -3,6 +3,7 @@ package no.nmdc.solr.request;
 import java.util.List;
 
 import no.nmdc.api.facets.domain.FacetName;
+import no.nmdc.api.search.domain.SearchParameters;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
@@ -12,8 +13,14 @@ import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Query solr server using the solrj API
+ * 
+ * @author endrem
+ *
+ */
 @Component
-public class QueryRequest {
+public class SearchRequest {
     
     private final Integer DEFAULT_ROWS = 10;
     
@@ -55,10 +62,24 @@ public class QueryRequest {
         if (queryResponse.getFacetFields() != null)
             System.out.println("FacetedField:"+queryResponse.getFacetFields().toString());
         System.out.println("Result:"+queryResponse.getResults().toString());
-        List<SolrDocument> docs = queryResponse.getResults(); //there is no facet count returned (?)
         
-        SolrDocumentList docList = queryResponse.getResults();
+        SolrDocumentList docList = queryResponse.getResults(); //there is no facet count returned (?)
         return docList;
     }
 
+    public SolrDocumentList search( SearchParameters request ) throws Exception {
+        
+        SolrQuery solrQuery = new SolrQuery();
+        solrQuery.setQuery( request.getQuery() );
+        if ( request.getQuery() == null || request.getQuery().equals("") )
+            solrQuery.setQuery( "*:*" );    
+        solrQuery.setStart( request.getOffset());
+        solrQuery.setRows( DEFAULT_ROWS );
+        solrQuery.setFilterQueries( request.getBbox() );
+
+        QueryResponse queryResponse = solr.query(solrQuery);
+        
+        System.out.println("solr response:"+queryResponse.getResults());
+        return queryResponse.getResults();
+    }
 }

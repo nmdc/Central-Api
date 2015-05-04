@@ -7,9 +7,10 @@ import java.util.Map;
 import no.nmdc.api.facets.domain.FacetName;
 import no.nmdc.api.facets.domain.FacetValue;
 import no.nmdc.api.facets.domain.Facets;
+import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
-import no.nmdc.solr.request.QueryRequest;
+import no.nmdc.solr.request.SearchRequest;
 
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
@@ -18,15 +19,21 @@ import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @see no.nmdc.api.MetadataApi
+ * 
+ * @author endrem
+ *
+ */
 @Component
 public class MetadataApiImpl implements MetadataApi {
     
-    private QueryRequest queryRequest;
+    private SearchRequest queryRequest;
     
     private FacetRequest lukeRequest;
     
     @Autowired
-    public void setQueryRequest(QueryRequest queryRequest) {
+    public void setQueryRequest(SearchRequest queryRequest) {
         this.queryRequest = queryRequest;
     }
     
@@ -35,6 +42,7 @@ public class MetadataApiImpl implements MetadataApi {
         this.lukeRequest = lukeRequest;
     }
     
+    /** {@inheritDoc} */
     public Facets getFacets() throws Exception {
         Facets facets = lukeRequest.getFacetsFromSolr();
         for ( FacetName f : facets.getFacets() ) {
@@ -51,8 +59,26 @@ public class MetadataApiImpl implements MetadataApi {
         return facets;
     }
     
-    public SearchResults search( String query, Integer offset ) throws Exception {
-        SolrDocumentList solrDocs = queryRequest.search(query, offset);
+    /** {@inheritDoc} */
+//    public SearchResults search( String query, Integer offset ) throws Exception {
+//        SolrDocumentList solrDocs = queryRequest.search(query, offset);
+//        
+//        SearchResults results = new SearchResults();
+//        for ( SolrDocument adoc : solrDocs ) {
+//            Collection<String> names = adoc.getFieldNames();
+//            Map<String, Object> record = new HashMap<String, Object>();
+//            for ( String name : names) {
+//                record.put( name, adoc.getFieldValue( name ) );
+//            }
+//            results.addResult( record );
+//        }
+//        results.setMatches(solrDocs.size());
+//        return results;
+//    }
+    
+    /** {@inheritDoc} */
+    public SearchResults search( SearchParameters query ) throws Exception {
+        SolrDocumentList solrDocs = queryRequest.search( query);
         
         SearchResults results = new SearchResults();
         for ( SolrDocument adoc : solrDocs ) {
@@ -67,5 +93,6 @@ public class MetadataApiImpl implements MetadataApi {
         return results;
     }
     
+    /** {@inheritDoc} */
     public String getMetadataDetail( String doi ) {return "";}
 }
