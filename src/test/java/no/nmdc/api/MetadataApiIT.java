@@ -35,9 +35,9 @@ public class MetadataApiIT {
     public void setup() {
         String query = "Provider:Havforskningsinstituttet";
         Integer offset = null;
-        String boundingBox = null;
-        Date beginDate = null;
-        Date endDate = null;
+        String boundingBox = "";
+        String beginDate = "";
+        String endDate = "";
         
         searchParam = new SearchParameters(query, offset, beginDate, endDate, boundingBox);
     }

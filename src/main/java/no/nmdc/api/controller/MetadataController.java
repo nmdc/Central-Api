@@ -1,7 +1,5 @@
 package no.nmdc.api.controller;
 
-import java.util.Date;
-
 import no.nmdc.api.MetadataApi;
 import no.nmdc.api.facets.domain.Facets;
 import no.nmdc.api.search.domain.SearchParameters;
@@ -31,24 +29,16 @@ public class MetadataController {
         return metadataApi.getFacets(); 
     }
     
-//    @RequestMapping("/search")
-//    public @ResponseBody SearchResults  search(@RequestParam("q") String query, @RequestParam(value = "offset", required = false) Integer offset) throws Exception {
-
-//        Integer start = null;
-//        if ( offset != null && !offset.equals("") ) {
-//            start = new Integer(offset);
-//        }
-//        SearchResults result = metadataApi.search(query, start);
-//        return result; 
-//    }
-    
     @RequestMapping("/search")
     public @ResponseBody SearchResults  search(@RequestParam("q") String query, 
             @RequestParam(value = "offset", required = false) Integer offset,
-            @RequestParam(value = "beginDate", required = false) Date beginDate,
-            @RequestParam(value = "endDate", required = false) Date endDate,
+            @RequestParam(value = "beginDate", required = false) String beginDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "bbox", required = false) String bbox) throws Exception {
 
+        System.out.println("query:"+query);
+        System.out.println("beginDate:"+beginDate);
+        System.out.println("endDate:"+endDate);
         SearchParameters req = new SearchParameters( query, offset, beginDate, endDate, bbox );
         SearchResults result = metadataApi.search( req );
         return result; 

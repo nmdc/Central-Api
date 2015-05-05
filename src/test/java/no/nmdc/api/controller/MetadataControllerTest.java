@@ -1,9 +1,6 @@
 package no.nmdc.api.controller;
 
 import static org.junit.Assert.assertTrue;
-
-import java.util.Date;
-
 import no.nmdc.api.search.domain.SearchResults;
 
 import org.junit.Test;
@@ -21,9 +18,9 @@ public class MetadataControllerTest {
     
     private String query = "";
     private Integer offset = null;
-    private String boundingBox = null;
-    private Date beginDate = null;
-    private Date endDate = null;
+    private String boundingBox = "";
+    private String beginDate = "";
+    private String endDate = "";
     
     @Test
     public void searchTest() throws Exception {

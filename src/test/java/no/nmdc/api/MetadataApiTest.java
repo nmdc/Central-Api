@@ -37,8 +37,8 @@ public class MetadataApiTest {
         String query = "";
         Integer offset = null;
         String boundingBox = null;
-        Date beginDate = null;
-        Date endDate = null;
+        String beginDate = null;
+        String endDate = null;
         
         searchParam = new SearchParameters(query, offset, beginDate, endDate, boundingBox);
     }

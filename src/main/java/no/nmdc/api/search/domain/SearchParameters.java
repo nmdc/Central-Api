@@ -1,6 +1,5 @@
 package no.nmdc.api.search.domain;
 
-import java.util.Date;
 
 /**
  * Object with fields made searchable to the solr index.
@@ -12,13 +11,13 @@ public class SearchParameters {
 
     private String query;
     private Integer offset;
-    private Date beginDate;
-    private Date endDate;
+    private String beginDate;
+    private String endDate;
     private String bbox;
     
     public SearchParameters() {}
     
-    public SearchParameters( String query, Integer offset, Date beginDate, Date endDate, String bbox) {
+    public SearchParameters( String query, Integer offset, String beginDate, String endDate, String bbox) {
         this.query = query;
         this.offset = offset;
         this.beginDate = beginDate;
@@ -38,16 +37,16 @@ public class SearchParameters {
     public void setOffset(Integer offset) {
         this.offset = offset;
     }
-    public Date getBeginDate() {
+    public String getBeginDate() {
         return beginDate;
     }
-    public void setBeginDate(Date beginDate) {
+    public void setBeginDate(String beginDate) {
         this.beginDate = beginDate;
     }
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
     public String getBbox() {

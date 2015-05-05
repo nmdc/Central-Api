@@ -8,7 +8,6 @@ import no.nmdc.api.search.domain.SearchParameters;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +24,8 @@ public class SearchRequest {
     private final Integer DEFAULT_ROWS = 10;
     
     private NmdcSolrServer solr;
+    
+    private DateHelper dateHelper = new DateHelper();
     
     @Autowired
     public void setSolr(NmdcSolrServer solr) {
@@ -70,13 +71,18 @@ public class SearchRequest {
     public SolrDocumentList search( SearchParameters request ) throws Exception {
         
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery( request.getQuery() );
+        String query = request.getQuery();
         if ( request.getQuery() == null || request.getQuery().equals("") )
-            solrQuery.setQuery( "*:*" );    
+            query = "*:*";    
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
+        
+        // solr uses dateformat: ISO 8601 yyyy-mm-ddThh:mm:ss.mmmZ
+        if ( request.getBeginDate() != null && !request.getBeginDate().equals("")) 
+            query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), "");
 
+        solrQuery.setQuery( query );
         QueryResponse queryResponse = solr.query(solrQuery);
         
         System.out.println("solr response:"+queryResponse.getResults());

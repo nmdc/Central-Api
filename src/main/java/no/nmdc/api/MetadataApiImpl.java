@@ -60,23 +60,6 @@ public class MetadataApiImpl implements MetadataApi {
     }
     
     /** {@inheritDoc} */
-//    public SearchResults search( String query, Integer offset ) throws Exception {
-//        SolrDocumentList solrDocs = queryRequest.search(query, offset);
-//        
-//        SearchResults results = new SearchResults();
-//        for ( SolrDocument adoc : solrDocs ) {
-//            Collection<String> names = adoc.getFieldNames();
-//            Map<String, Object> record = new HashMap<String, Object>();
-//            for ( String name : names) {
-//                record.put( name, adoc.getFieldValue( name ) );
-//            }
-//            results.addResult( record );
-//        }
-//        results.setMatches(solrDocs.size());
-//        return results;
-//    }
-    
-    /** {@inheritDoc} */
     public SearchResults search( SearchParameters query ) throws Exception {
         SolrDocumentList solrDocs = queryRequest.search( query);
         
