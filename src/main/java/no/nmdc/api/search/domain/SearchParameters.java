@@ -9,11 +9,11 @@ package no.nmdc.api.search.domain;
  */
 public class SearchParameters {
 
-    private String query;
+    private String query = "";
     private Integer offset;
-    private String beginDate;
-    private String endDate;
-    private String bbox;
+    private String beginDate = "";
+    private String endDate = "";
+    private String bbox = "";
     
     public SearchParameters() {}
     

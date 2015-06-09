@@ -7,13 +7,17 @@ public class DateHelperTest {
     @Test
     public void createSolrDateQuerySyntaxTest() throws Exception {
         DateHelper d = new DateHelper();
-        String syntax = d.createSolrDateQuerySyntax("1901-01-03T00:00:00+0400", "2013-01-03T23:59:59+0400");
+        String syntax = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", "2013-01-02T20:00:00Z");
         
         System.out.println(syntax);
         
-        String syntax2 = d.createSolrDateQuerySyntax("1901-01-03T00:00:00+0400", "");
+        String syntax2 = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", "");
         
         System.out.println( syntax2 );
+        
+        String syntax3 = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", null);
+        
+        System.out.println( syntax3 );
         
     }
 }

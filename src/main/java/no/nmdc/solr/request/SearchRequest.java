@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Query solr server using the solrj API
+ * Dateformat is ISO 8601 (UTC date) yyyy-mm-ddThh:mm:ss.mmmZ 
  * 
  * @author endrem
  *
@@ -49,6 +50,7 @@ public class SearchRequest {
         } else return new FacetField("");
     }    
     
+    //TODO: remove method
     public SolrDocumentList search(String query, Integer offset) throws Exception {
         
         SolrQuery solrQuery = new SolrQuery();
@@ -69,18 +71,20 @@ public class SearchRequest {
     }
 
     public SolrDocumentList search( SearchParameters request ) throws Exception {
-        
+
         SolrQuery solrQuery = new SolrQuery();
         String query = request.getQuery();
-        if ( request.getQuery() == null || request.getQuery().equals("") )
+        if ( request.getQuery() == null || request.getQuery().equals("") ) {
             query = "*:*";    
+        }
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
         
-        // solr uses dateformat: ISO 8601 yyyy-mm-ddThh:mm:ss.mmmZ
-        if ( request.getBeginDate() != null && !request.getBeginDate().equals("")) 
-            query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), "");
+        // solr uses dateformat: 
+        if ( request.getBeginDate() != null && !request.getBeginDate().equals("")) { 
+            query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
+        }
 
         solrQuery.setQuery( query );
         QueryResponse queryResponse = solr.query(solrQuery);
