@@ -68,7 +68,7 @@ public class MetadataApiImpl implements MetadataApi {
             Collection<String> names = adoc.getFieldNames();
             Map<String, Object> record = new HashMap<String, Object>();
             for ( String name : names) {
-                record.put( name, adoc.getFieldValue( name ) );
+                record.put( name, adoc.getFieldValue( name ).toString() );
             }
             results.addResult( record );
         }
