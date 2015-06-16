@@ -17,15 +17,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SolrRequestsIT {
     
     @Autowired
-    private NmdcSolrServer solr = new NmdcSolrServer();
+    private NmdcSolrServer solr;
     
     @Autowired
-    private SearchRequest query = new SearchRequest();
+    private SearchRequest searchReq;
     
     @Test
     public void search() throws Exception {
         
-        SolrDocumentList docs = query.search("Provider:Havforskningsinstituttet", null);         
+        SearchParameters query = new SearchParameters();
+        query.setQuery("Provider:Havforskningsinstituttet");
+        SolrDocumentList docs = searchReq.search( query );         
         SolrDocument doc = docs.get(0);
         
         System.out.println("doc:"+doc);
@@ -37,7 +39,9 @@ public class SolrRequestsIT {
     @Test
     public void searchTwoFacets() throws Exception {
 
-        SolrDocumentList docs = query.search("Provider:Havforskningsinstituttet AND Parameter:SALINITY/DENSITY", null);         
+        SearchParameters query = new SearchParameters();
+        query.setQuery("Provider:Havforskningsinstituttet AND Parameter:SALINITY/DENSITY");
+        SolrDocumentList docs = searchReq.search( query );         
         SolrDocument doc = docs.get(0);
         
         System.out.println("doc:"+doc);
@@ -52,7 +56,7 @@ public class SolrRequestsIT {
         SearchParameters r = new SearchParameters();
         r.setQuery("sognesjøen");
         
-        SolrDocumentList docs = query.search(r);
+        SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
         SolrDocument doc = docs.get(0);
         
@@ -67,7 +71,7 @@ public class SolrRequestsIT {
         r.setQuery("*");
         r.setBeginDate("1901-01-02T20:00:00Z");
         
-        SolrDocumentList docs = query.search(r);
+        SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
         SolrDocument doc = docs.get(0);
         

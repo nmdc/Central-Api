@@ -11,13 +11,6 @@ public class DateHelper {
     
     public String createSolrDateQuerySyntax(String fromDate, String toDate) throws ParseException {
 
-        if ( fromDate == null ) {
-            fromDate = "";
-        }
-        if ( toDate == null ) {
-            toDate = "";
-        }
-        
         SimpleDateFormat dateFormatUTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
 

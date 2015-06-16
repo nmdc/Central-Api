@@ -18,8 +18,5 @@ public class DateHelperTest {
 
         String syntax4 = d.createSolrDateQuerySyntax("", "1936-01-02T20:00:00Z");
         System.out.println( syntax4 );
-        
-        String syntax5 = d.createSolrDateQuerySyntax(null, "1936-01-02T20:00:00Z");
-        System.out.println( syntax5 );
     }
 }

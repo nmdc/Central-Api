@@ -49,26 +49,6 @@ public class SearchRequest {
             return theField;
         } else return new FacetField("");
     }    
-    
-    //TODO: remove method
-    public SolrDocumentList search(String query, Integer offset) throws Exception {
-        
-        SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery( query );
-        if ( offset != null ) {
-            solrQuery.setStart(offset);
-            solrQuery.setRows( DEFAULT_ROWS );
-        }
-
-        QueryResponse queryResponse = solr.query(solrQuery);
-        System.out.println("queryResponse:"+queryResponse.toString());
-        if (queryResponse.getFacetFields() != null)
-            System.out.println("FacetedField:"+queryResponse.getFacetFields().toString());
-        System.out.println("Result:"+queryResponse.getResults().toString());
-        
-        SolrDocumentList docList = queryResponse.getResults(); //there is no facet count returned (?)
-        return docList;
-    }
 
     public SolrDocumentList search( SearchParameters request ) throws Exception {
 
@@ -80,16 +60,12 @@ public class SearchRequest {
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
-        
-        // solr uses dateformat: 
-        if ( request.getBeginDate() != null && !request.getBeginDate().equals("")) { 
+        if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) { 
             query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
         }
 
         solrQuery.setQuery( query );
         QueryResponse queryResponse = solr.query(solrQuery);
-        
-        System.out.println("solr response:"+queryResponse.getResults());
         return queryResponse.getResults();
     }
 }

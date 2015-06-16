@@ -340,7 +340,7 @@
 						<artifactId>tomcat7-maven-plugin</artifactId>
 						<version>2.1</version>
 						<configuration>
-							<path>/Central-Api</path>
+							<path>/metadata-api</path>
 							<port>8080</port>
 						</configuration>
 						<executions>
