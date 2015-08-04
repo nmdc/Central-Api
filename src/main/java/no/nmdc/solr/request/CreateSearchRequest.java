@@ -54,19 +54,18 @@ public class CreateSearchRequest {
 
         SolrQuery solrQuery = new SolrQuery();
         String query = request.getQuery();
-        if ( request.getQuery() == null || request.getQuery().equals("") ) {
-            query = "*:*";    
-        }
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
         if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) { 
             if ( request.getDateSearchMode().equals(SearchParameters.DATE_INTERSECTS_RECORD_RANGE) ) {
-                query = getStartAndStopDateIntersectsRange( query, request );
+                query += getStartAndStopDateIntersectsRange( query, request );
             } else {
-                query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
-                query += " AND Stop_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
+                query += getStartAndStopDateIsWithinRange( query, request );
             }
+        }
+        if ( query.equals("") ) {
+            query = "*:*";    
         }
 
         solrQuery.setQuery( query );
@@ -82,6 +81,7 @@ public class CreateSearchRequest {
      * @return
      */
     private String getStartAndStopDateIntersectsRange( String query, SearchParameters request ) {
+        String dateQuery = "";
         String endDate = request.getEndDate();
         if ( request.getEndDate().equals("") ) {
             endDate = "NOW";
@@ -90,10 +90,33 @@ public class CreateSearchRequest {
         if ( request.getBeginDate().equals("") ) {
             beginDate = DateHelper.FIRST_RECORD;
         }
-        query += " AND ( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
-                " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])"+
-                " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
-        System.out.println(query);
+        dateQuery = "( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
+            " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])" +
+            " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
+
+        query += dateQuery;
+        return query;
+    }
+    
+    /**
+     * querying for endDate; but no beginDate means from the beginning to stopDate
+     * querying for beginDate; but no endDate means from the beginDate  to today
+     * @param query
+     * @param request
+     * @return
+     */
+    private String getStartAndStopDateIsWithinRange( String query, SearchParameters request ) {
+        String endDate = request.getEndDate();
+        if ( request.getEndDate().equals("") ) {
+            endDate = "NOW";
+        }
+        String beginDate = request.getBeginDate();
+        if ( request.getBeginDate().equals("") ) {
+            beginDate = DateHelper.FIRST_RECORD;
+        }
+        query += "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +
+                " OR (Start_Date:[* TO "+ beginDate +"] AND !Stop_Date:[* TO *] AND Start_Date:[* TO " + endDate +"])"+  
+                " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *] AND Stop_Date[" + endDate + " TO *]) )";  
         return query;
     }
 }

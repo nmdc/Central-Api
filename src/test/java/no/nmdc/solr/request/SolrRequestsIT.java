@@ -114,7 +114,7 @@ public class SolrRequestsIT {
         SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
     }     
-   
+    
     @Test
     public void searchEndDateIntersects() throws Exception {
 
@@ -133,5 +133,40 @@ public class SolrRequestsIT {
         
         SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
-    }      
+    } 
+    
+    @Test
+    public void searchBeginDateAndEndDateIsWithin() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setDateSearchMode(SearchParameters.DATE_IS_WITHIN_RECORD_RANGE);
+        r.setBeginDate("2003-01-02T20:00:00Z");
+        r.setEndDate("2004-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }     
+    
+    @Test
+    public void searchBeginDateAndEndDateIsWithin2() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setDateSearchMode(SearchParameters.DATE_IS_WITHIN_RECORD_RANGE);
+        r.setBeginDate("1937-01-02T20:00:00Z");
+        r.setEndDate("1938-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }  
+    
+    @Test
+    public void searchBeginDateAndEndDateIsWithin3() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setDateSearchMode(SearchParameters.DATE_IS_WITHIN_RECORD_RANGE);
+        r.setEndDate("1999-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }  
 }
