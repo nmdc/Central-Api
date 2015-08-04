@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class SearchRequest {
+public class CreateSearchRequest {
     
     private final Integer DEFAULT_ROWS = 10;
     
@@ -61,11 +61,39 @@ public class SearchRequest {
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
         if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) { 
-            query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
+            if ( request.getDateSearchMode().equals(SearchParameters.DATE_INTERSECTS_RECORD_RANGE) ) {
+                query = getStartAndStopDateIntersectsRange( query, request );
+            } else {
+                query += " AND Start_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
+                query += " AND Stop_Date:" + dateHelper.createSolrDateQuerySyntax(request.getBeginDate(), request.getEndDate());
+            }
         }
 
         solrQuery.setQuery( query );
         QueryResponse queryResponse = solr.query(solrQuery);
         return queryResponse.getResults();
+    }
+    
+    /**
+     * querying for endDate; but no beginDate means from the beginning to stopDate
+     * querying for beginDate; but no endDate means from the beginDate  to today
+     * @param query
+     * @param request
+     * @return
+     */
+    private String getStartAndStopDateIntersectsRange( String query, SearchParameters request ) {
+        String endDate = request.getEndDate();
+        if ( request.getEndDate().equals("") ) {
+            endDate = "NOW";
+        }
+        String beginDate = request.getBeginDate();
+        if ( request.getBeginDate().equals("") ) {
+            beginDate = DateHelper.FIRST_RECORD;
+        }
+        query += " AND ( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
+                " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])"+
+                " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
+        System.out.println(query);
+        return query;
     }
 }

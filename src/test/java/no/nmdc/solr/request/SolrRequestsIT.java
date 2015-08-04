@@ -20,7 +20,7 @@ public class SolrRequestsIT {
     private NmdcSolrServer solr;
     
     @Autowired
-    private SearchRequest searchReq;
+    private CreateSearchRequest searchReq;
     
     @Test
     public void search() throws Exception {
@@ -61,22 +61,77 @@ public class SolrRequestsIT {
         SolrDocument doc = docs.get(0);
         
         System.out.println("doc:"+doc);
-
     }    
     
     @Test
-    public void searchDate() throws Exception {
+    public void searchBeginDateIntersects() throws Exception {
 
         SearchParameters r = new SearchParameters();
-        r.setQuery("*");
         r.setBeginDate("1901-01-02T20:00:00Z");
         
         SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
-        SolrDocument doc = docs.get(0);
-        
-        System.out.println("doc size:"+docs.size());
-        System.out.println("doc:"+doc);
+    }
+    
+    @Test
+    public void searchBeginDateIntersects2() throws Exception {
 
-    }  
+        SearchParameters r = new SearchParameters();
+        r.setBeginDate("2006-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }    
+    
+    @Test
+    public void searchBeginDateIntersects3() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setBeginDate("1999-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }        
+    
+    @Test
+    public void searchBeginDateAndEndDateIntersects() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setBeginDate("1998-01-02T20:00:00Z");
+        r.setEndDate("1999-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }      
+    
+    @Test
+    public void searchBeginDateAndEndDateIntersects2() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setBeginDate("2006-01-02T20:00:00Z");
+        r.setEndDate("2007-01-02T20:00:00Z");
+
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }     
+   
+    @Test
+    public void searchEndDateIntersects() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setEndDate("1999-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }        
+    
+    @Test
+    public void searchEndDateIntersects2() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        r.setEndDate("2006-01-02T20:00:00Z");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }      
 }

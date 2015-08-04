@@ -7,7 +7,7 @@ import java.util.TimeZone;
 
 public class DateHelper {
     
-    private final String FIRST_RECORD = "1500-01-02T20:00:00Z";
+    public static final String FIRST_RECORD = "1500-01-02T20:00:00Z";
     
     public String createSolrDateQuerySyntax(String fromDate, String toDate) throws ParseException {
 

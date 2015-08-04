@@ -34,9 +34,10 @@ public class MetadataController {
             @RequestParam(value = "offset", required = false) Integer offset,
             @RequestParam(value = "beginDate", required = false) String beginDate,
             @RequestParam(value = "endDate", required = false) String endDate,
-            @RequestParam(value = "bbox", required = false) String bbox) throws Exception {
+            @RequestParam(value = "bbox", required = false) String bbox,
+            @RequestParam(value = "dateSearchMode", required = false) String dateSearchMode) throws Exception {
                 
-        SearchParameters req = new SearchParameters( query, offset, beginDate, endDate, bbox );
+        SearchParameters req = new SearchParameters( query, offset, beginDate, endDate, bbox, dateSearchMode );
         SearchResults result = metadataApi.search( req );
         return result; 
     }

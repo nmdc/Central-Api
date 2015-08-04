@@ -10,7 +10,7 @@ import no.nmdc.api.facets.domain.Facets;
 import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
-import no.nmdc.solr.request.SearchRequest;
+import no.nmdc.solr.request.CreateSearchRequest;
 
 import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.FacetField.Count;
@@ -28,12 +28,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MetadataApiImpl implements MetadataApi {
     
-    private SearchRequest queryRequest;
+    private CreateSearchRequest queryRequest;
     
     private FacetRequest lukeRequest;
     
     @Autowired
-    public void setQueryRequest(SearchRequest queryRequest) {
+    public void setQueryRequest(CreateSearchRequest queryRequest) {
         this.queryRequest = queryRequest;
     }
     

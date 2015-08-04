@@ -17,7 +17,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import no.nmdc.api.search.domain.SearchParameters;
 import no.nmdc.api.search.domain.SearchResults;
 import no.nmdc.solr.request.FacetRequest;
-import no.nmdc.solr.request.SearchRequest;
+import no.nmdc.solr.request.CreateSearchRequest;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MetadataApiTest {
@@ -25,7 +25,7 @@ public class MetadataApiTest {
     private MetadataApiImpl impl = new MetadataApiImpl();
     
     @Mock
-    SearchRequest queryRequest;
+    CreateSearchRequest queryRequest;
     
     @Mock
     FacetRequest lukeRequest;
