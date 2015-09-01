@@ -24,7 +24,6 @@ public interface MetadataApi {
      * @return {@literal SearchResults} as JSON 
      * @throws Exception
      */
-//    public SearchResults search( String query, Integer offset ) throws Exception;
     public SearchResults search( SearchParameters query ) throws Exception;
     
     /**
@@ -32,5 +31,5 @@ public interface MetadataApi {
      * @return {@literal SearchResults} as JSON 
      * @throws Exception
      */
-    public String getMetadataDetail( String doi );
+    public SearchResults getMetadataDetail( String doi ) throws Exception;
 }

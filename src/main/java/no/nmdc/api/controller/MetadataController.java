@@ -41,4 +41,10 @@ public class MetadataController {
         SearchResults result = metadataApi.search( req );
         return result; 
     }
+    
+    @RequestMapping("/getMetadataDetails")
+    public @ResponseBody SearchResults  getMetadataDetails(@RequestParam("doi") String doi) throws Exception {
+
+        return metadataApi.getMetadataDetail(doi);
+    }
 }
