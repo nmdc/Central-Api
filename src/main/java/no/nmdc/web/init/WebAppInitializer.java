@@ -1,8 +1,6 @@
 package no.nmdc.web.init;
 
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import no.nmdc.web.config.WebMvcConfig;
 

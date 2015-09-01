@@ -19,7 +19,7 @@
     <bean id="defaultProperties" class="org.apache.commons.configuration.MapConfiguration">
         <constructor-arg index="0">
             <map>
-                <entry key="solr.url" value="http://dev1.nmdc.no:8983/solr/nmdc/"/>
+                <entry key="solr.url" value="http://test1.nmdc.no:8983/solr/nmdc/"/>
             </map>
         </constructor-arg>
     </bean>

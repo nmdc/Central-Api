@@ -57,11 +57,14 @@ public class CreateSearchRequest {
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
-        if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) { 
+        if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) {
+            if ( !query.equals("") ) {
+                query += " AND ";
+            }
             if ( request.getDateSearchMode().equals(SearchParameters.DATE_INTERSECTS_RECORD_RANGE) ) {
-                query += getStartAndStopDateIntersectsRange( query, request );
+                query += getStartAndStopDateIntersectsRange( request );
             } else {
-                query += getStartAndStopDateIsWithinRange( query, request );
+                query += getStartAndStopDateIsWithinRange( request );
             }
         }
         if ( query.equals("") ) {
@@ -80,7 +83,7 @@ public class CreateSearchRequest {
      * @param request
      * @return
      */
-    private String getStartAndStopDateIntersectsRange( String query, SearchParameters request ) {
+    private String getStartAndStopDateIntersectsRange( SearchParameters request ) {
         String dateQuery = "";
         String endDate = request.getEndDate();
         if ( request.getEndDate().equals("") ) {
@@ -94,8 +97,7 @@ public class CreateSearchRequest {
             " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])" +
             " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
 
-        query += dateQuery;
-        return query;
+        return dateQuery;
     }
     
     /**
@@ -105,7 +107,8 @@ public class CreateSearchRequest {
      * @param request
      * @return
      */
-    private String getStartAndStopDateIsWithinRange( String query, SearchParameters request ) {
+    private String getStartAndStopDateIsWithinRange( SearchParameters request ) {
+        String dateQuery = "";
         String endDate = request.getEndDate();
         if ( request.getEndDate().equals("") ) {
             endDate = "NOW";
@@ -114,9 +117,10 @@ public class CreateSearchRequest {
         if ( request.getBeginDate().equals("") ) {
             beginDate = DateHelper.FIRST_RECORD;
         }
-        query += "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +
+        dateQuery = "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +
                 " OR (Start_Date:[* TO "+ beginDate +"] AND !Stop_Date:[* TO *] AND Start_Date:[* TO " + endDate +"])"+  
                 " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *] AND Stop_Date[" + endDate + " TO *]) )";  
-        return query;
+        
+        return dateQuery;
     }
 }

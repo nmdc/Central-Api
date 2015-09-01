@@ -14,6 +14,9 @@ public class SearchResults {
     private Integer matches;
     
     @XmlElement
+    private Long numFound;
+
+    @XmlElement
     private List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
 
     public Integer getMatches() {
@@ -23,7 +26,15 @@ public class SearchResults {
     public void setMatches(Integer matches) {
         this.matches = matches;
     }
+    
+    public Long getNumFound() {
+        return numFound;
+    }
 
+    public void setNumFound(Long numFound) {
+        this.numFound = numFound;
+    }
+    
     public List<Map<String, Object>> getResults() {
         return results;
     }

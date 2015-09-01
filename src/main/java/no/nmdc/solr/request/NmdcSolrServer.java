@@ -1,5 +1,7 @@
 package no.nmdc.solr.request;
 
+import java.io.IOException;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.configuration.Configuration;
@@ -40,7 +42,7 @@ public class NmdcSolrServer {
         return solrClient;
     }
     
-    public QueryResponse query( SolrQuery solrQuery) throws SolrServerException {
+    public QueryResponse query( SolrQuery solrQuery) throws IOException, SolrServerException {
         return solrClient.query(solrQuery);
     }
 }

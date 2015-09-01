@@ -98,4 +98,9 @@ public class SearchParameters {
                 this.dateSearchMode = DATE_IS_WITHIN_RECORD_RANGE;
         }
     }
+    
+    @Override
+    public String toString() {
+        return "query:"+query+" offset:"+offset+" beginDate:"+beginDate+" endDate:"+endDate+" bbox:"+bbox+" dateSearchMode:"+dateSearchMode;
+    }
 }

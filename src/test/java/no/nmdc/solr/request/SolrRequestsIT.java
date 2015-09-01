@@ -169,4 +169,28 @@ public class SolrRequestsIT {
         SolrDocumentList docs = searchReq.search(r);
         System.out.println("size docs:"+docs.size());
     }  
+    
+    @Test
+    public void searchMultipleProviders() throws Exception {
+        String search = "(Provider:\"NO/NPI\" OR Provider:\"Norwegian Institute for Water Research\" OR Provider:\"NERSC | Nansen Environmental and Remote Sensing Center\")";
+        SearchParameters r = new SearchParameters();
+        r.setQuery(search);
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.size());
+    }
+    
+    @Test
+    public void searchIsWithin2DatesAND_ORSomethingElse() throws Exception {
+
+        SearchParameters r = new SearchParameters();
+        
+        r.setDateSearchMode(SearchParameters.DATE_IS_WITHIN_RECORD_RANGE);
+        r.setBeginDate("1969-12-31T23:00:00Z");
+        r.setEndDate("2015-08-17T22:00:00Z");
+        r.setQuery("CTD");
+        
+        SolrDocumentList docs = searchReq.search(r);
+        System.out.println("size docs:"+docs.getNumFound());
+    }  
 }
