@@ -2,7 +2,6 @@ package no.nmdc.api;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.apache.solr.common.SolrDocument;

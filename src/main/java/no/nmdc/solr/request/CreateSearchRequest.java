@@ -90,9 +90,9 @@ public class CreateSearchRequest {
             endDate = "NOW";
         }
         String beginDate = request.getBeginDate();
-        if ( request.getBeginDate().equals("") ) {
-            beginDate = DateHelper.FIRST_RECORD;
-        }
+            if ( request.getBeginDate().equals("") ) {
+                beginDate = DateHelper.FIRST_RECORD;
+            }
         dateQuery = "( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
             " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])" +
             " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";

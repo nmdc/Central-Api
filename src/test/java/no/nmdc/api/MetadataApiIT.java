@@ -4,7 +4,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.StringWriter;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -56,6 +59,27 @@ public class MetadataApiIT {
             }
         }
     }
+    
+    @Test
+    public void getParameterHierachyIT() throws Exception {
+        Facets facets = new Facets();
+        FacetName name = new FacetName();
+        name.setName("parameter");
+        name.setMatches("10");
+        FacetValue value1 = new FacetValue();
+        value1.setValue("EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > WATER TEMPERATURE");
+        value1.setMatches("10");
+
+        FacetValue value2 = new FacetValue();
+        value2.setValue("EARTH SCIENCE > OCEANS > SALINITY/DENSITY > SALINITY");
+        value2.setMatches("5");
+        
+        name.addChild(value1);
+        name.addChild(value2);
+        facets.addFacet(name);
+        
+        impl.createFacetHierarchy(facets);
+    }
 
     @Test
     public void searchForOneFacetIT() throws Exception {
@@ -78,5 +102,13 @@ public class MetadataApiIT {
         String facetXml = writer.getBuffer().toString();
         assertTrue(facetXml.contains("<name>Provider</name>"));
         assertTrue(facetXml.contains("<value>Havforskningsinstituttet</value>"));
+    }
+    
+    @Test
+    public void getMetadataDetailsTest() throws Exception {
+        SearchResults results = impl.getMetadataDetail("ii_1420");
+        System.out.println("*********** resultat:"+results.getResults());
+        SearchResults results2 = impl.search(new SearchParameters("Entry_ID:\"ii_1420\"", 10, "", "", ""));
+        System.out.println("*********** resultat:"+results2.getResults());
     }
 }

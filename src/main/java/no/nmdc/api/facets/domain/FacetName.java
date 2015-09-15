@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -60,5 +59,10 @@ public class FacetName {
     
     public void addChild(FacetValue child) {
         this.children.add(child);
+    }
+    
+    @Override
+    public String toString() {
+        return "name:"+name+", matches:"+matches;
     }
 }
