@@ -62,9 +62,9 @@ public class CreateSearchRequest {
                 query += " AND ";
             }
             if ( request.getDateSearchMode().equals(SearchParameters.DATE_INTERSECTS_RECORD_RANGE) ) {
-                query += getStartAndStopDateIntersectsRange( request );
+                query += dateHelper.getStartAndStopDateIntersectsRange( request );
             } else {
-                query += getStartAndStopDateIsWithinRange( request );
+                query += dateHelper.getStartAndStopDateIsWithinRange( request );
             }
         }
         if ( query.equals("") ) {
@@ -74,53 +74,5 @@ public class CreateSearchRequest {
         solrQuery.setQuery( query );
         QueryResponse queryResponse = solr.query(solrQuery);
         return queryResponse.getResults();
-    }
-    
-    /**
-     * querying for endDate; but no beginDate means from the beginning to stopDate
-     * querying for beginDate; but no endDate means from the beginDate  to today
-     * @param query
-     * @param request
-     * @return
-     */
-    private String getStartAndStopDateIntersectsRange( SearchParameters request ) {
-        String dateQuery = "";
-        String endDate = request.getEndDate();
-        if ( request.getEndDate().equals("") ) {
-            endDate = "NOW";
-        }
-        String beginDate = request.getBeginDate();
-            if ( request.getBeginDate().equals("") ) {
-                beginDate = DateHelper.FIRST_RECORD;
-            }
-        dateQuery = "( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
-            " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])" +
-            " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
-
-        return dateQuery;
-    }
-    
-    /**
-     * querying for endDate; but no beginDate means from the beginning to stopDate
-     * querying for beginDate; but no endDate means from the beginDate  to today
-     * @param query
-     * @param request
-     * @return
-     */
-    private String getStartAndStopDateIsWithinRange( SearchParameters request ) {
-        String dateQuery = "";
-        String endDate = request.getEndDate();
-        if ( request.getEndDate().equals("") ) {
-            endDate = "NOW";
-        }
-        String beginDate = request.getBeginDate();
-        if ( request.getBeginDate().equals("") ) {
-            beginDate = DateHelper.FIRST_RECORD;
-        }
-        dateQuery = "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +
-                " OR (Start_Date:[* TO "+ beginDate +"] AND !Stop_Date:[* TO *] AND Start_Date:[* TO " + endDate +"])"+  
-                " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *] AND Stop_Date[" + endDate + " TO *]) )";  
-        
-        return dateQuery;
     }
 }

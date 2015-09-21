@@ -1,36 +1,56 @@
 package no.nmdc.solr.request;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
+import no.nmdc.api.search.domain.SearchParameters;
 
 public class DateHelper {
     
     public static final String FIRST_RECORD = "1500-01-02T20:00:00Z";
     
-    public String createSolrDateQuerySyntax(String fromDate, String toDate) throws ParseException {
-
-        SimpleDateFormat dateFormatUTC = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        dateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-        Date start = null;
-        if ( !fromDate.equals("") ) {
-            start = dateFormatUTC.parse(fromDate);
+    /**
+     * querying for endDate; but no beginDate means from the beginning to stopDate
+     * querying for beginDate; but no endDate means from the beginDate  to today
+     * @param query
+     * @param request
+     * @return
+     */
+    public String getStartAndStopDateIntersectsRange( SearchParameters request ) {
+        String dateQuery = "";
+        String endDate = request.getEndDate();
+        if ( request.getEndDate().equals("") ) {
+            endDate = "NOW";
         }
-        Date end = null;
-        if ( !toDate.equals("") ) {
-            end = dateFormatUTC.parse(toDate);
+        String beginDate = request.getBeginDate();
+            if ( request.getBeginDate().equals("") ) {
+                beginDate = FIRST_RECORD;
+            }
+        dateQuery = "( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
+            " OR (Start_Date:[* TO "+ endDate +"] AND !Stop_Date:[* TO *])" +
+            " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *]) )";
+
+        return dateQuery;
+    }
+    
+    /**
+     * querying for endDate; but no beginDate means from the beginning to stopDate
+     * querying for beginDate; but no endDate means from the beginDate  to today
+     * @param query
+     * @param request
+     * @return
+     */
+    public String getStartAndStopDateIsWithinRange( SearchParameters request ) {
+        String dateQuery = "";
+        String endDate = request.getEndDate();
+        if ( request.getEndDate().equals("") ) {
+            endDate = "NOW";
         }
+        String beginDate = request.getBeginDate();
+        if ( request.getBeginDate().equals("") ) {
+            beginDate = FIRST_RECORD;
+        }
+        dateQuery = "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +
+                " OR (Start_Date:[* TO "+ beginDate +"] AND !Stop_Date:[* TO *] AND Start_Date:[* TO " + endDate +"])"+  
+                " OR (!Start_Date:[* TO *] AND Stop_Date:["+beginDate+" TO *] AND Stop_Date[" + endDate + " TO *]) )";  
         
-        String range = "";
-        if ( toDate.equals("") && !fromDate.equals("") ) {
-            range = "[" + dateFormatUTC.format(start) + " *]";    
-        } else if ( fromDate.equals("") && !toDate.equals("") ) {
-            range = "[" + FIRST_RECORD + " TO " + dateFormatUTC.format(end) + "]";
-        } else if ( !fromDate.equals("") && !toDate.equals("") ){ 
-            range = "[" + dateFormatUTC.format(start) + " TO " + dateFormatUTC.format(end) + "]";
-        }
-        return range;
+        return dateQuery;
     }
 }

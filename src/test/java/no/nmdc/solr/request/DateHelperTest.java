@@ -1,5 +1,7 @@
 package no.nmdc.solr.request;
 
+import no.nmdc.api.search.domain.SearchParameters;
+
 import org.junit.Test;
 
 public class DateHelperTest {
@@ -7,16 +9,22 @@ public class DateHelperTest {
     @Test
     public void createSolrDateQuerySyntaxTest() throws Exception {
         DateHelper d = new DateHelper();
-        String syntax = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", "2013-01-02T20:00:00Z");
+        SearchParameters p = new SearchParameters();
+        
+        p.setBeginDate( "1901-01-02T20:00:00Z");
+        p.setEndDate( "2013-01-02T20:00:00Z" );
+        String syntax = d.getStartAndStopDateIntersectsRange(p);
         System.out.println(syntax);
         
-        String syntax2 = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", "");
-        System.out.println( syntax2 );
         
-        String syntax3 = d.createSolrDateQuerySyntax("1901-01-02T20:00:00Z", "");
-        System.out.println( syntax3 );
+        p.setEndDate( "" );
+        String syntax2 = d.getStartAndStopDateIntersectsRange(p);
+        System.out.println( syntax2 );
 
-        String syntax4 = d.createSolrDateQuerySyntax("", "1936-01-02T20:00:00Z");
-        System.out.println( syntax4 );
+        p.setBeginDate( "" );
+        p.setEndDate( "1936-01-02T20:00:00Z" );
+        String syntax3 = d.getStartAndStopDateIntersectsRange(p);
+        System.out.println( syntax3 );
     }
+  
 }
