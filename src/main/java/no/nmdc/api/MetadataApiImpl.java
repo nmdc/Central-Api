@@ -61,7 +61,7 @@ public class MetadataApiImpl implements MetadataApi {
             }
         }
         
-//        new PathHierarchyFacetHelper().createFacetHierarchy(facets);
+        new PathHierarchyFacetHelper().createFacetHierarchy(facets);
         return facets;
     }
 

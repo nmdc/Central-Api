@@ -14,7 +14,7 @@ public class PathHierarchyFacetHelperTest {
     public void getParameterHierachyIT() throws Exception {
         Facets facets = new Facets();
         FacetName name = new FacetName();
-        name.setName("parameter");
+        name.setName("Parameter");
         name.setMatches("10");
         FacetValue value1 = new FacetValue();
         value1.setValue("EARTH SCIENCE > OCEANS > OCEAN TEMPERATURE > WATER TEMPERATURE");
