@@ -16,11 +16,11 @@ public class DateHelper {
     public String getStartAndStopDateIntersectsRange( SearchParameters request ) {
         String dateQuery = "";
         String endDate = request.getEndDate();
-        if ( request.getEndDate().equals("") ) {
+        if ( "".equals(request.getEndDate()) ) {
             endDate = "NOW";
         }
         String beginDate = request.getBeginDate();
-            if ( request.getBeginDate().equals("") ) {
+            if ( "".equals(request.getBeginDate()) ) {
                 beginDate = FIRST_RECORD;
             }
         dateQuery = "( (Start_Date:[* TO "+ endDate +"] AND Stop_Date:["+beginDate+" TO *])"+
@@ -40,11 +40,11 @@ public class DateHelper {
     public String getStartAndStopDateIsWithinRange( SearchParameters request ) {
         String dateQuery = "";
         String endDate = request.getEndDate();
-        if ( request.getEndDate().equals("") ) {
+        if ( "".equals(request.getEndDate()) ) {
             endDate = "NOW";
         }
         String beginDate = request.getBeginDate();
-        if ( request.getBeginDate().equals("") ) {
+        if ( "".equals(request.getBeginDate()) ) {
             beginDate = FIRST_RECORD;
         }
         dateQuery = "( (Start_Date:[* TO "+ beginDate +"] AND Stop_Date:["+beginDate+" TO *] AND Start_Date:[* TO " + endDate +"] AND Stop_Date:[" + endDate + " TO *])" +

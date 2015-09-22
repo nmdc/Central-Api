@@ -74,7 +74,9 @@ public class PathHierarchyFacetHelper {
         FacetValue childNode = null;
         if ( foundFlag ) {
             childNode = createNode(aTokenString, matches, currentLeaf);
-        } else childNode = currentLeaf;
+        } else {
+            childNode = currentLeaf;
+        }
         if ( nextToken.indexOf(">") > 0 ) {
             currentLeaf = childNode;
             getNextNode(nextToken, matches, currentLeaf );
@@ -89,13 +91,14 @@ public class PathHierarchyFacetHelper {
         childValue.setMatches( matches );
         boolean foundOnLevel = false;
         if ( leafNode.getChildFacets() != null ) {
-            for ( FacetValue existingOnLevel : leafNode.getChildFacets())
+            for ( FacetValue existingOnLevel : leafNode.getChildFacets()) {
                 if ( existingOnLevel.getValue().equals(childValue.getValue()) ) {
                     foundOnLevel = true;
                     childValue = existingOnLevel;
                     break;
                 }
             }
+        }
         if ( foundOnLevel == false ) {
             leafNode.addChildFacet( childValue );
         }

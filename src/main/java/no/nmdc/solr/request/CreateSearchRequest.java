@@ -44,10 +44,11 @@ public class CreateSearchRequest {
     
         QueryResponse queryResponse = solr.query(solrQuery);
         List<FacetField> fields = queryResponse.getFacetFields();
-        if (fields.size() > 0) {
-            FacetField theField = fields.get(0);
-            return theField;
-        } else return new FacetField("");
+        if ( !fields.isEmpty()) {
+            return fields.get(0);
+        } else{ 
+            return new FacetField("");
+        }
     }    
 
     public SolrDocumentList search( SearchParameters request ) throws Exception {
@@ -57,7 +58,7 @@ public class CreateSearchRequest {
         solrQuery.setStart( request.getOffset());
         solrQuery.setRows( DEFAULT_ROWS );
         solrQuery.setFilterQueries( request.getBbox() );
-        if ( !request.getBeginDate().equals("") || !request.getEndDate().equals("") ) {
+        if ( !"".equals(request.getBeginDate() ) || !"".equals(request.getEndDate()) ) {
             if ( !query.equals("") ) {
                 query += " AND ";
             }
@@ -67,7 +68,7 @@ public class CreateSearchRequest {
                 query += dateHelper.getStartAndStopDateIsWithinRange( request );
             }
         }
-        if ( query.equals("") ) {
+        if ( "".equals(query) ) {
             query = "*:*";    
         }
 
