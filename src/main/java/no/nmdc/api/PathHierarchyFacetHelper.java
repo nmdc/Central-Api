@@ -10,15 +10,22 @@ import no.nmdc.api.facets.domain.Facets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Creates a hiearchy of FacetValue objects from the "Parameter" facets.
+ * @author endrem
+ *
+ */
 public class PathHierarchyFacetHelper {
     
     private static final Logger logger = LoggerFactory.getLogger(MetadataApiImpl.class);
+    
+    private static final String PARAMETER = "Parameter";
     
     protected void createFacetHierarchy( Facets facets ) {
         List<FacetName> names = facets.getFacets();
 
         for ( FacetName f : names ) {
-            if ( f.getName().equals("Parameter") ) {
+            if ( f.getName().equals( PARAMETER ) ) {
                 
                 List<FacetValue> parameterChildren = f.getChildren();
                 
@@ -34,7 +41,6 @@ public class PathHierarchyFacetHelper {
                         getNextNode( nextPathString, nextPathMatches, firstElement );
                     } else {
                         logger.error("Two root elements: 1."+firstElement+ " and 2."+nextPathObject);
-                        System.out.println("*******************");
                     }
                 }
                 List<FacetValue> earthScience = new ArrayList<FacetValue>(1);

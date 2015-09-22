@@ -32,7 +32,7 @@ public class SolrRequestsIT {
         
         System.out.println("doc:"+doc);
         String entryId = (String)doc.getFieldValue("Entry_ID");
-        assertTrue( entryId.contains("imr") );
+        assertTrue( entryId.length() > 0 );
         assertNotNull( doc.getFieldValue("Start_Date") );
     }
     
@@ -40,13 +40,13 @@ public class SolrRequestsIT {
     public void searchTwoFacets() throws Exception {
 
         SearchParameters query = new SearchParameters();
-        query.setQuery("Provider:Havforskningsinstituttet AND Parameter:SALINITY/DENSITY");
+        query.setQuery("Provider:Institute of Marine Research, Bergen, Norway OR Parameter:\"EARTH SCIENCE>BIOSPHERE>AQUATIC ECOSYSTEMS>BENTHIC HABITAT\"");
         SolrDocumentList docs = searchReq.search( query );         
         SolrDocument doc = docs.get(0);
         
         System.out.println("doc:"+doc);
         String entryId = (String)doc.getFieldValue("Entry_ID");
-        assertTrue( entryId.contains("imr") );
+        assertTrue( entryId.length() > 0 );
         assertNotNull( doc.getFieldValue("Start_Date") );
     }    
     

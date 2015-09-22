@@ -27,29 +27,24 @@ public class MetadataControllerTest {
     public void searchTest() throws Exception {
         
         SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE", offset, beginDate, endDate, boundingBox, dateSearchMode );
-        SearchResults resOk1 = controller.search( "Parameter:SALINITY/DENSITY", offset, beginDate, endDate, boundingBox, dateSearchMode );
-        SearchResults resOk2 = controller.search( "Parameter:\"OCEAN TEMPERATURE\"", offset, beginDate, endDate, boundingBox, dateSearchMode ); //"Parameter:%22OCEAN%20TEMPERATURE%22"
-        SearchResults resOk3 = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset, beginDate, endDate, boundingBox, dateSearchMode );  //%22SALINITY/DENSITY%22
+        SearchResults resOk1 = controller.search( "Parameter:*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );
+        SearchResults resOk2 = controller.search( "Parameter:*WATER TEMPERATURE*", offset, beginDate, endDate, boundingBox, dateSearchMode ); 
         
         assertTrue( resFail.getMatches() == 0 );
         assertTrue( resOk1.getMatches() > 0 );
         assertTrue( resOk2.getMatches() > 0 );
-        assertTrue( resOk3.getMatches() > 0 );
     }
     
     @Test
     public void offsetTest() throws Exception {
 
         Integer offset = new Integer(5);
-        SearchResults resOffset = controller.search( "Parameter:\"SALINITY/DENSITY\"", offset, beginDate, endDate, boundingBox, dateSearchMode );  
-        System.out.println("matches:"+resOffset.getMatches());
+        SearchResults resOffset = controller.search( "Parameter:*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );  
         assertTrue( resOffset.getMatches() > 0 );
     }
     
     @Test
     public void bboxTest() throws Exception {
-//        "fq": "location_rpt:\"Intersects(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
-//        "fq": "location_rpt:\"IsWithin(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
 
         String bbox = "location_rpt:\"Intersects(POLYGON((6.0 55.0, 10.0 55.0, 10.0 70.0, 6.0 70.0, 6.0 55.0)))\"";
         
@@ -61,7 +56,6 @@ public class MetadataControllerTest {
     public void getAllDocumentsTest() throws Exception {
         
         SearchResults resbbox = controller.search( query, offset, beginDate, endDate, boundingBox, dateSearchMode );
-        System.out.println("matches:"+resbbox.getMatches());
         assertTrue( resbbox.getMatches() > 0);
     }
 }
