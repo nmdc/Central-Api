@@ -24,6 +24,8 @@ public class CreateSearchRequest {
     
     private final Integer DEFAULT_ROWS = 10;
     
+    private final Integer FACET_LIMIT = 10000;
+    
     private NmdcSolrServer solr;
     
     private DateHelper dateHelper = new DateHelper();
@@ -41,6 +43,7 @@ public class CreateSearchRequest {
         solrQuery.setRows(new Integer(0));
         solrQuery.setFacetMinCount(1);
         solrQuery.addFacetField(facetName.getName());
+        solrQuery.setFacetLimit(FACET_LIMIT);
     
         QueryResponse queryResponse = solr.query(solrQuery);
         List<FacetField> fields = queryResponse.getFacetFields();
