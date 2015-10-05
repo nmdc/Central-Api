@@ -68,7 +68,8 @@ public class CreateSearchRequest {
             if ( request.getDateSearchMode().equals(SearchParameters.DATE_INTERSECTS_RECORD_RANGE) ) {
                 query += dateHelper.getStartAndStopDateIntersectsRange( request );
             } else {
-                query += dateHelper.getStartAndStopDateIsWithinRange( request );
+//                query += dateHelper.getStartAndStopDateIsWithinRange( request );
+                query += dateHelper.getRecordRangeIsWithinStartAndStopDate( request );
             }
         }
         if ( "".equals(query) ) {

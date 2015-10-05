@@ -53,4 +53,28 @@ public class DateHelper {
         
         return dateQuery;
     }
+    
+    /**
+     * querying for endDate; but no beginDate means from the beginning to stopDate
+     * querying for beginDate; but no endDate means from the beginDate  to today
+     * @param query
+     * @param request
+     * @return
+     */
+    public String getRecordRangeIsWithinStartAndStopDate( SearchParameters request ) {
+        String dateQuery = "";
+        String endDate = request.getEndDate();
+        if ( "".equals(request.getEndDate()) ) {
+            endDate = "NOW";
+        }
+        String beginDate = request.getBeginDate();
+        if ( "".equals(request.getBeginDate()) ) {
+            beginDate = FIRST_RECORD;
+        }
+        dateQuery = "( (Start_Date:[" + beginDate + " TO "+ endDate + "] AND Stop_Date:[" + beginDate + " TO "+ endDate + "])" +
+                " OR (Start_Date:[" + beginDate + " TO "+ endDate + "] AND !Stop_Date:[* TO *])" +  
+                " OR (!Start_Date:[* TO *] AND Stop_Date:[" + beginDate + " TO "+ endDate + "]) )";  
+        
+        return dateQuery;
+    }
 }
