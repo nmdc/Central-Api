@@ -23,12 +23,14 @@ public class MetadataControllerTest {
     private String endDate = "";
     private String dateSearchMode = "";
     
+    private static final String PARAMETER = "Scientific_Keyword";
+    
     @Test
     public void searchTest() throws Exception {
         
-        SearchResults resFail = controller.search( "Parameter:OCEAN%20TEMPERATURE", offset, beginDate, endDate, boundingBox, dateSearchMode );
-        SearchResults resOk1 = controller.search( "Parameter:*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );
-        SearchResults resOk2 = controller.search( "Parameter:*WATER TEMPERATURE*", offset, beginDate, endDate, boundingBox, dateSearchMode ); 
+        SearchResults resFail = controller.search( PARAMETER+":OCEAN%20TEMPERATURE", offset, beginDate, endDate, boundingBox, dateSearchMode );
+        SearchResults resOk1 = controller.search( PARAMETER+":*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );
+        SearchResults resOk2 = controller.search( PARAMETER+":*WATER TEMPERATURE*", offset, beginDate, endDate, boundingBox, dateSearchMode ); 
         
         assertTrue( resFail.getMatches() == 0 );
         assertTrue( resOk1.getMatches() > 0 );
@@ -39,7 +41,7 @@ public class MetadataControllerTest {
     public void offsetTest() throws Exception {
 
         Integer offset = new Integer(5);
-        SearchResults resOffset = controller.search( "Parameter:*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );  
+        SearchResults resOffset = controller.search( PARAMETER+":*SALINITY/DENSITY*", offset, beginDate, endDate, boundingBox, dateSearchMode );  
         assertTrue( resOffset.getMatches() > 0 );
     }
     

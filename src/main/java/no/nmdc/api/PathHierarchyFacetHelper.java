@@ -19,7 +19,7 @@ public class PathHierarchyFacetHelper {
     
     private static final Logger logger = LoggerFactory.getLogger(MetadataApiImpl.class);
     
-    private static final String PARAMETER = "Parameter";
+    private static final String PARAMETER = "Scientific_Keyword";
     
     protected void createFacetHierarchy( Facets facets ) {
         List<FacetName> names = facets.getFacets();

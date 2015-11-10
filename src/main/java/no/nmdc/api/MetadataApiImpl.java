@@ -1,5 +1,7 @@
 package no.nmdc.api;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,8 @@ public class MetadataApiImpl implements MetadataApi {
     
     private FacetRequest lukeRequest;
     
+    private final static String DATA_URL = "Data_URL";
+    
     @Autowired
     public void setQueryRequest(CreateSearchRequest queryRequest) {
         this.queryRequest = queryRequest;
@@ -51,7 +55,7 @@ public class MetadataApiImpl implements MetadataApi {
         Facets facets = lukeRequest.getFacetsFromSolr();
         for ( FacetName f : facets.getFacets() ) {
             FacetField theField = queryRequest.facetedQuery( f );
-            
+                
             f.setMatches( "" + theField.getValueCount() );
             for ( Count c : theField.getValues() ) {
                 FacetValue facetChild = new FacetValue();
@@ -78,7 +82,19 @@ public class MetadataApiImpl implements MetadataApi {
             Collection<String> names = adoc.getFieldNames();
             Map<String, Object> record = new HashMap<String, Object>();
             for ( String name : names) {
-                record.put( name, adoc.getFieldValue( name ).toString() );
+                if ( name.equals( DATA_URL )) {
+                    Collection<Object> urls = (Collection<Object>)adoc.getFieldValues( name );
+                    Collection<String> urlsEncoded = new ArrayList<String>(urls.size());
+                    for (Object aUrl : urls ) {
+                        String aUrlString = (String) aUrl;
+                        String encodedUrl = URLEncoder.encode(aUrlString, "UTF-8");
+                        urlsEncoded.add( encodedUrl );
+                    }
+                    record.put(name, urlsEncoded.toString() );
+                } else {
+                    String values = adoc.getFieldValue( name ).toString();
+                    record.put( name, values );
+                }
             }
             results.addResult( record );
         }

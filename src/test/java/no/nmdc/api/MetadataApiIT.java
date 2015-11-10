@@ -90,4 +90,10 @@ public class MetadataApiIT {
         SearchResults results2 = impl.search(new SearchParameters("Entry_ID:\"ii_1420\"", 10, "", "", ""));
         System.out.println("*********** resultat:"+results2.getResults());
     }
+    
+    @Test
+    public void getMetadataDetailsForRecordWithData_URLWithComma()  throws Exception {
+        SearchResults results = impl.getMetadataDetail("MGKornstrFlate_Reg");
+        System.out.println("*********** resultat:"+results.getResults());
+    }
 }
