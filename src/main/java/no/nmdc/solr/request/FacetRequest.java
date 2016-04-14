@@ -7,6 +7,7 @@ import java.util.Map;
 import no.nmdc.api.facets.domain.FacetName;
 import no.nmdc.api.facets.domain.Facets;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.solr.client.solrj.request.LukeRequest;
 import org.apache.solr.client.solrj.response.LukeResponse;
 import org.apache.solr.client.solrj.response.LukeResponse.FieldInfo;
@@ -26,6 +27,9 @@ public class FacetRequest {
     private NmdcSolrServer solr;
     
     private FacetWhitelist facetWhitelist;
+    
+    @Autowired
+    private Configuration configuration;
     
     @Autowired
     public void setSolr(NmdcSolrServer solr) {
@@ -53,6 +57,11 @@ public class FacetRequest {
     protected List<FieldInfo> getFieldInfo() throws Exception {
 
         LukeRequest lukeRequest = new LukeRequest();
+        
+        String username = configuration.getString("solr.username");
+        String password = configuration.getString("solr.password");
+        lukeRequest.setBasicAuthCredentials(username, password); 
+        
         lukeRequest.setNumTerms(1);
         LukeResponse lukeResponse = lukeRequest.process(solr.getSolrClient());
 
