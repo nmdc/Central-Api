@@ -68,14 +68,12 @@ public class MetadataApiImpl implements MetadataApi {
         new PathHierarchyFacetHelper().createFacetHierarchy(facets);
         return facets;
     }
-
     
     /** {@inheritDoc} */
     public SearchResults search( SearchParameters query ) throws Exception {
         SolrDocumentList solrDocs = queryRequest.search( query);
         
         logger.info("query.toString:"+query.toString());
-        
         
         SearchResults results = new SearchResults();
         for ( SolrDocument adoc : solrDocs ) {

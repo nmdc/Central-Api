@@ -14,4 +14,9 @@
     <context:component-scan base-package="no.nmdc" />
     <context:annotation-config />     
      
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">	
+	</bean>
+	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:prefix="/WEB-INF/jsp/" p:suffix=".jsp" />     
 </beans>  
