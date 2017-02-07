@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import no.nmdc.api.db.LandingPageHash;
 import no.nmdc.api.facets.domain.FacetName;
 import no.nmdc.api.facets.domain.FacetValue;
 import no.nmdc.api.facets.domain.Facets;
@@ -50,6 +51,9 @@ public class MetadataApiImpl implements MetadataApi {
         this.lukeRequest = lukeRequest;
     }
     
+    @Autowired
+    private LandingPageHash landingpageHash;
+    
     /** {@inheritDoc} */
     public Facets getFacets() throws Exception {
         Facets facets = lukeRequest.getFacetsFromSolr();
@@ -71,7 +75,7 @@ public class MetadataApiImpl implements MetadataApi {
     
     /** {@inheritDoc} */
     public SearchResults search( SearchParameters query ) throws Exception {
-        SolrDocumentList solrDocs = queryRequest.search( query);
+        SolrDocumentList solrDocs = queryRequest.search( query );
         
         logger.info("query.toString:"+query.toString());
         
@@ -89,6 +93,10 @@ public class MetadataApiImpl implements MetadataApi {
                         urlsEncoded.add( encodedUrl );
                     }
                     record.put(name, urlsEncoded.toString() );
+                } else if( name.equals("Entry_ID") ) { 
+                	String values = adoc.getFieldValue( name ).toString();
+                	Map<String, String> url = landingpageHash.getUrlAsMap(values);
+                	record.put( "landingpage", url.get("url"));
                 } else {
                     String values = adoc.getFieldValue( name ).toString();
                     record.put( name, values );

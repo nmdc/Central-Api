@@ -1,0 +1,33 @@
+#dataset_citation, #personnel, #parameters, #temporal_coverage, #datacenter, #relatedUrl, #boundingbox{
+	/*border:1px solid black;*/
+}
+.box {
+	float: center;
+	/*border:1px solid black;*/
+}
+.metadataLabel {
+  font-style: italic;
+  display: inline-block;
+  width: 200px;
+  background-color: LightGray;
+}
+.value {
+	text-indent: 200px;
+}
+.loop{
+	font-style: bold;
+	font-size: 110%;
+}
+.metadata {
+	width: 100%;
+	float: left;
+}
+#map {
+	height: 200px;
+    width: 28%;
+}
+#nmdcLogo {
+	position: absolute;
+    top: 1px;
+    right: 1px;
+}

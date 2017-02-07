@@ -10,8 +10,8 @@
   	<div class="box" id="license"><span class="label">License</span><span class="value"></span></div>
 	<div class="box" id="doi"><span class="label">DOI</span><span class="value"></span></div>
   	
-    <div class="loopBox" id="dataset_citation">
-      <div class="loopLabel">Data Set Citation</div>
+    <div id="dataset_citation">
+      <div class="loopLabel"><span class="label">Data Set Citation</span></div>
       <xsl:for-each select="dif:Data_Set_Citation">
         <div class="box" id="creator"><span class="label">Creator</span><span class="value"><xsl:value-of select="dif:Dataset_Creator/text()"/></span></div>
         <div class="box" id="title"><span class="label">Title</span><span class="value"><xsl:value-of select="dif:Dataset_Title/text()"/></span></div>
@@ -23,7 +23,7 @@
     </div>
 
     <div id="personnel">
-      <div class="loopLabel">Personnel</div>
+      <div class="loopLabel"><span class="label">Personnel</span></div>
       <xsl:for-each select="dif:Personnel">
         <div class="box" id="role"><span class="label">Role</span><span class="value"><xsl:value-of select="dif:Role/text()"/></span></div>
         <div class="box" id="firstName"><span class="label">First Name</span><span class="value"><xsl:value-of select="dif:First_Name/text()"/></span></div>
@@ -38,7 +38,7 @@
     </div>
 
     <div id="parameters">
-      <div class="loopLabel">Parameters</div>
+      <div class="loopLabel"><span class="label">Parameters</span></div>
       <xsl:for-each select="dif:Parameters">
         <div class="loopLabel" id="path"><span class="label">Parameter</span>
           <span class="value">
@@ -66,7 +66,7 @@
       <div class="box" id="datacenterLongname"><span class="label">Data Center Long Name</span><span class="value"><xsl:value-of select="dif:Data_Center/dif:Data_Center_Name/Long_Name/text()"/></span></div>
       <div class="box" id="datacenterUrl"><span class="label">Data Center URL</span><span class="value"><xsl:value-of select="dif:Data_Center/dif:Data_Center_URL/text()"/></span></div>
       <div id="personnel">
-        <div class="loopLabel">Personnel</div>
+        <div class="loopLabel"><span class="label">Data Center Personnel</span></div>
         <xsl:for-each select="dif:Data_Center/dif:Personnel">
           <div class="box" id="Role"><span class="label">Role</span><span class="value"><xsl:value-of select="dif:Role"/></span></div>
           <div class="box" id="firstName"><span class="label">First Name</span><span class="value"><xsl:value-of select="dif:First_Name/text()"/></span></div>
@@ -81,19 +81,31 @@
       </div>
     </div>
 
-    <div class="box" id="summary"><span class="label">Abstract</span><span class="value"><xsl:value-of select="dif:Summary/dif:Abstract/text()"/></span></div>
+    <div class="box" id="summary"><span class="label">Abstract</span><span class="value"><xsl:value-of select="dif:Summary/text()"/></span></div>
     <div id="relatedUrl">
       <div class="loopLabel"/>
       <xsl:for-each select="dif:Related_URL">
         <div class="box" id="url"><span class="label">Url</span><span class="value"><xsl:value-of select="dif:URL"/></span></div>
       </xsl:for-each>
     </div>
+    
+	 <div class="box" id="boundingbox"><span class="label">Bounding Box</span><span class="value"><xsl:value-of select="dif:Spatial_Coverage/Southernmost_Latitude"/></span></div>
+     <div id="boundingbox">
+      <div class="loopLabel"><span class="label">Bounding Box</span></div>
+      <xsl:for-each select="dif:Spatial_Coverage">
+        <div class="box" id="southernmostLatitude"><span class="label">Southernmost Latitude</span><span class="value"><xsl:value-of select="dif:Southernmost_Latitude/text()"/></span></div>
+        <div class="box" id="NorthernmostLatitude"><span class="label">Northernmost Latitude</span><span class="value"><xsl:value-of select="dif:Northernmost_Latitude/text()"/></span></div>
+        <div class="box" id="WesternmostLongitude"><span class="label">Westernmost Longitude</span><span class="value"><xsl:value-of select="dif:Westernmost_Longitude/text()"/></span></div>
+        <div class="box" id="EasternmostLongitude"><span class="label">Easternmost Longitude</span><span class="value"><xsl:value-of select="dif:Easternmost_Longitude/text()"/></span></div>
+      </xsl:for-each>
+    </div>
 
   </xsl:template>
 <xsl:template match="/nmdc:meta/nmdc:parameters">
-  <div class="box" id="boundingbox"><span class="label">Bounding Box</span><span class="value"><xsl:value-of select="nmdc:polygon"/></span></div>
+  <div class="box" id="boundingboxWKT"><span class="label">Bounding Box as WKT</span><span class="value"><xsl:value-of select="nmdc:polygon"/></span></div>
   <div id="bbox" wkt="{nmdc:polygon}" />
 </xsl:template>
+
 
 </xsl:stylesheet>
     
