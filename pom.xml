@@ -37,8 +37,17 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
-			</snapshots>
+			</snapshots>			
 		</repository>
+        <repository>
+            <id>central2</id>
+            <name>Central Repository</name>
+            <url>https://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>		
 		<repository>
 			<id>nexus-release</id>
 			<name>Nexus release repository for IMR</name>
@@ -48,6 +57,20 @@
 			<!-- url>http://javadev.imr.no:8081/nexus/content/repositories/releases/</url  -->
 		</repository>
 	</repositories>
+
+	  <pluginRepositories>
+		<pluginRepository>
+			<id>maven-plugins-central</id>
+			<url>https://repo.maven.apache.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	  </pluginRepositories>
+	
 	<properties>
 		<org.springframework.version>4.1.5.RELEASE</org.springframework.version>
 		<tomcat.version>7.0.47</tomcat.version>
