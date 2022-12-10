@@ -72,7 +72,7 @@
 	  </pluginRepositories>
 	
 	<properties>
-		<org.springframework.version>4.1.5.RELEASE</org.springframework.version>
+		<org.springframework.version>6.0.0</org.springframework.version>
 		<tomcat.version>7.0.47</tomcat.version>
 		<jaxb.version>2.1.11</jaxb.version>
 		<jstl.version>1.2</jstl.version>
